@@ -1,0 +1,1202 @@
+   \documentclass[a4paper]{article}
+\usepackage{amsmath}
+\numberwithin{equation}{section}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{relsize}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{bm}
+
+\usepackage{empheq}
+\definecolor{myred}{rgb}{.99, .76, 0.8}
+\newcommand*\myredbox[1]{%
+	\colorbox{myred}{\hspace{1em}#1\hspace{1em}}}
+
+
+\usepackage{dcolumn,booktabs}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+\newcommand\mc[1]{\multicolumn{1}{c}{#1}}
+
+\title{\vspace{-5ex}Part II Electrodynamics}
+\author{Eddie Revell}
+\date{\vspace{-4ex}}
+\graphicspath{ {Images/} }
+\begin{document}
+
+\maketitle
+\setlength{\parindent}{0cm}
+
+This set of notes was made using material lectured in the Part II course \textit{Electrodynamics}, and enriched by my further reading of other sources. Knowledge of 1B \textit{Electromagnetism} will be assumed at points, and so will knowledge of Special Relativity, although there is a short recap at the start of this set of notes.\\
+\\
+\textbf{The signature convention will be (-,+,+,+) throughout these notes.}
+
+\tableofcontents
+\newpage
+
+\section{Electromagnetism as a Classical Field Theory}
+\subsection{Recap of Maxwell's Equations and the Lorentz Force Law}
+Recall that Maxwell's equations are given by:
+\begin{align}
+\nabla \cdot \mathbf{E} &=\frac{\rho}{\epsilon_0} \label{max1} \\
+\nabla \cdot \mathbf{B} &=0 \label{max2} \\ 
+\nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \label{max3} \\
+\nabla \times \mathbf{B} &= \mu_0 \mathbf{J} +\mu_0\epsilon_0 \frac{\partial \mathbf{E}}{\partial{t}} \label{max4}
+\end{align}
+Where:
+\begin{itemize}
+\item \textbf{E} and \textbf{B} are the \textit{electric} and \textit{magnetic} fields respectively.
+\item $\rho(\mathbf{x},t)$ is the \textit{electric charge density} (measured in $\text{Cm}^{-3}$).
+\item $\mathbf{J}(\mathbf{x},t)$ is the \textit{electric current density} (defined so that $\mathbf{J}\cdot d\mathbf{S}$ is the charge per unit time passing through fixed area element $d \mathbf{S}$.)
+\item $\epsilon_0 \approx 8.85\times 10^{-12} \text{ kg}^{-1} \text{m}^{-3} \text{C}^{2} \text{s}^2$ is the \textit{electric permittivity of free space} and $\mu_0 \approx 4\pi \times 10^{-7} \text{ kgmC}^{-2}$ is the \textit{permeability of free space}. These two quantities are \textbf{not} independent - they satisfy $\mu_0 \epsilon_0 = \frac{1}{c^2}$, where $c$ is the speed of light in a vacuum.
+\end{itemize}
+The inclusion of the \textit{displacement current} $\mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t}$ in (1.4) ensures that the \text{continuity equation} is satisfied, which expresses the conservation of electric charge:
+\begin{equation} \label{ceq}
+\frac{\partial \rho}{\partial t} + \nabla \cdot \mathbf{J} = 0
+\end{equation}
+Charged particles are governed by the \textit{Lorentz force law}:
+\begin{equation}
+\mathbf{F}=q(\mathbf{E}+\mathbf{v}\times\mathbf{B})
+\end{equation}
+In continuum, with $\mathbf{f}$ representing the force density, this becomes:
+\begin{equation}
+\mathbf{f}=\rho \mathbf{E}+\mathbf{J} \times \mathbf{B}
+\end{equation}
+
+\subsection{(Special) Relativistic Reformulation}
+\subsubsection{Maxwell's Equations and the Maxwell Field-strength Tensor}
+Maxwell's equations can be written in their 4D relativistic form as:
+\begin{gather}
+\partial_\mu F^{\mu \nu} = - \mu_0 J^{\nu} \label{M1} \\
+\partial_\rho F_{\mu \nu} + \partial_\nu F_{\rho \mu}+\partial_\mu F_{F \nu \rho}=0 \label{M2}
+\end{gather}
+Where:
+\begin{itemize}
+\item $\partial_\mu = \frac{\partial}{\partial x^{\mu}}$ is the \textit{space-time derivative} ($x^\mu = (ct, \mathbf{x})$, the \textit{space-time coordinates} in an inertial frame.)
+\item $F^{\mu \nu}$ is the \textit{Maxwell field-strength tensor} (also known as the \textit{antisymmetric electromagnetic tensor}), given by:
+\begin{equation}
+F^{\mu \nu}=
+\begin{pmatrix}
+0 & \frac{E_x}{c} & \frac{E_y}{c} & \frac{E_z}{c} \\
+-\frac{E_x}{c} & 0 & B_z & -B_y \\
+-\frac{E_y}{c} & -B_z & 0 & B_x \\
+-\frac{E_z}{c} & B_y & -B_x & 0
+\end{pmatrix}
+\end{equation}
+\item The \textit{current four-vector} has the aforementioned charge and current densities as its components:
+\begin{equation}
+J^{\mu}=(\rho c , \mathbf{J})
+\end{equation}
+And satisfies the \textit{relativistic continuity equation}:
+\begin{equation}
+\partial_\mu J^{\mu}=0
+\end{equation}
+\end{itemize}
+The first of the covariant Maxwell's equations (1.8) encodes the two sourced 3D equations (1.1) and (1.4), while (1.9) gives rise to the other two. Note that sometimes this second covariant Maxwell equation is written as:
+\begin{equation}
+\partial_\mu \tilde{F}^{\mu \nu} = 0 
+\end{equation}
+Where $\tilde{F}^{\mu \nu}$ is the \textit{dual field strength tensor}, given by:
+\begin{equation}
+\tilde{F}^{\mu \nu} = \frac{1}{2} \epsilon^{\mu \nu \rho \sigma}F_{\rho \sigma}
+\end{equation}
+With $\epsilon^{\mu \nu \rho \sigma}$, the \textit{alternating tensor}, given by:
+\begin{equation}
+\epsilon^{\mu \nu \rho \sigma}=
+\begin{cases}
+\ 1 & \text{If $\mu,\nu,\rho,\sigma$ is an even permutation of 0,1,2,3.} \\
+-1 & \text{If $\mu,\nu,\rho,\sigma$ is an odd permutation of 0,1,2,3.} \\
+\ 0 & \text{Otherwise.}
+\end{cases}
+\end{equation}
+Recall from potential theory that we can write $\mathbf{E}=-\nabla \phi - \frac{\partial \mathbf{A}}{\partial t}$ and $\mathbf{B} = \nabla \times \mathbf{A}$ for scalar and vector potentials $\phi$ and $\mathbf{A}$. We can then use these to for the \textit{four-vector potential}:
+\begin{equation}
+A^{\mu}=(\phi/c, \mathbf{A})
+\end{equation}
+And the Maxwell field-strength tensor (1.10) may instead be written (defined) by:
+\begin{equation}
+F_{\mu \nu} = \partial_\mu A_\nu - \partial_\mu\nu A_\mu
+\end{equation}
+\subsubsection{Gauge Symmetries}
+An important concept in many field theories is that of \textit{gauge symmetries} - the idea that we can add the gradient of a scalar function to our potentials, the resulting fields will be unchanged. Explicitly, this is:
+\begin{align}
+\begin{split}
+\phi &\rightarrow \phi - \frac{\partial \chi}{\partial t} \\
+\mathbf{A} &\rightarrow \mathbf{A}+ \nabla \chi \\
+A^\mu &\rightarrow A^\mu + \partial^\mu \chi
+\end{split}
+\end{align}
+For some (sufficiently  smooth) function $\chi(\mathbf{x},t)$. It is left as an exercise to verify that the electric and magnetic fields are indeed unchanged by this transformation.
+\subsubsection{Boosting Between Inertial Reference Frames}
+Recall that under a Lorentz boost, (contravariant) tensors transform as:
+\begin{align}
+\begin{split}
+X'^\mu &= \Lambda _\mu^{ \ \nu} X^\nu \\
+T'^{\mu \nu} &= \Lambda_\mu^{\ \rho} \Lambda_\nu^{\ \sigma} T^{\rho \sigma}
+\end{split}
+\end{align}
+Where $\Lambda$ is a matrix representing the boost under consideration. The Maxwell field-strength tensor transforms in the same way, and explicitly computing its components after the boost (e.g. by matrix multiplication) will tell you exactly how the fields transform.\\
+\\
+\textbf{Exercise:} For electric and magnetic fields \textbf{E} and \textbf{B} with components $E_x$, $E_y$, $E_z$ and $B_x$, $B_y$, $B_z$ respectively (so that $F^{\mu \nu}$ is given by (1.10)), verify that under a Lorentz boost of speed $v$ along the $x$-axis, the transformed electric and magnetic fields are:
+\begin{equation*}
+\mathbf{E'}= \begin{pmatrix}
+E_x \\
+\gamma(E_y - vB_x) \\
+\gamma(E_z+vB_y)
+\end{pmatrix}
+\qquad
+\mathbf{B'} = \begin{pmatrix}
+B_x \\
+\gamma(B_y + vE_z/c^2) \\
+\gamma(B_z-vE_y/c^2)
+\end{pmatrix}
+\end{equation*}
+Where, of course, $\gamma = (1-\frac{v^2}{c^2})^{-\frac{1}{2}}$.
+\subsubsection{Quadratic Lorentz Invariants}
+We may construct two \textit{quadratic invariants} using the Maxwell field-strength tensor and its dual. These are quantities that are unchanged under Lorentz boosts. They are:
+\begin{align}
+\frac{1}{2}F_{\mu \nu}F^{\mu \nu} = |\mathbf{B}|^2-\frac{1}{c^2}|\mathbf{E}|^2 \\
+\frac{1}{4}\tilde{F}_{\mu \nu} F^{ \mu \nu} = \frac{1}{c} \mathbf{E} \cdot \mathbf{B}
+\end{align}
+The first of which tells us that the electromagnetic energy density is the same in all reference frames, whilst the second says the inner product of $\mathbf{E}$ and $\mathbf{B}$ is conserved.
+\subsubsection{The Lorentz Force Law}
+Recall that for a four-vector $X^\mu = (ct, \mathbf{x})$, we define the four-velocity and four-momentum by:
+\begin{align}
+U^\mu&=\frac{dX^\mu}{d \tau}=\gamma\frac{d}{dt}X^\mu=\gamma(ct,\mathbf{v}) \\
+P^\mu &= mU^\mu = \gamma m (ct, \mathbf{v})
+\end{align}
+Where $\mathbf{v}:=\frac{d \mathbf{x}}{dt}$ and $\tau$ is the proper time, $\gamma \tau = t$. A force is considered to be the rate of change of four-momentum with respect to the proper time, and thus the Lorentz Force law is given by:
+\begin{equation}
+\frac{d P^\mu}{d \tau}=qF^{\mu \nu}U_\nu
+\end{equation}
+Notice that the time component of this equation tells us how energy changes with respect to time:
+\begin{equation}
+\frac{d E}{d t}=q \mathbf{E} \cdot \mathbf{B}
+\end{equation}
+
+\section{Action Principles for Electrodynamics}
+In this section, we seek to generalise the principle of \textit{least action} from classical dynamics. To start with, we'll refamiliarize ourselves with the \textit{Euler-Lagrange equations}:
+\subsection{The Euler-Lagrange Equations}
+Consider an action of the form:
+\begin{equation}
+S[\mathbf{y}] = \int f\bigg(\mathbf{y},\frac{\partial \mathbf{y}}{\partial \mathbf{x}},\mathbf{x}\bigg) \ d \mathbf{x}
+\end{equation}
+The corresponding \textit{Euler Lagrange Equations} for this action is then:\footnote{See \textit{1B Variational Principles} for details}
+\begin{align}
+\begin{split}
+\frac{\partial f}{\partial \mathbf{y}} - \frac{\partial}{
+\partial \mathbf{x}} \cdot \bigg(\frac{\partial f}{\partial (\frac{\partial \mathbf{y}}{\partial \mathbf{x}})} \bigg)&=\mathbf{0} \\
+\text{i.e.} \quad \frac{\partial f}{\partial y_i}-\frac{\partial}{\partial x_j}\bigg(\frac{\partial f}{\partial(\frac{\partial y_i}{\partial x_j})}\bigg)&=0
+\end{split}
+\end{align}
+The solution(s) to this equation minimise the action (2.1), provided that end points are fixed.
+\subsection{Relativistic Point Particles in Magnetic Fields}
+Consider a particle moving from point A to point B in 3+1 dimensional space-time. We say the particle moves on its \textit{world-line}. The four position vector of the particle is given by $x^\mu = (ct, \mathbf{x}(t)) \leftrightarrow (c \tau, \mathbf{0})$, where $\tau$ is the particle's proper time, related to the observer's time by $t=\gamma \tau$. A very natural way to think of the action $S_0[x^\mu]$ of the particle is as being proportional to the length of its world line, that is:
+\begin{equation}
+S_0[x^{\mu}] = \frac{k}{c}\int_A^B d \tau
+\end{equation}
+For some constant\footnote{The factor of $1/c$ is purely for later convenience} $k$, which we will determine by insisting that in the limit of the particle's velocity going to zero, $\mathbf{v} \rightarrow \mathbf{0}$, we obtain the classical kinetic energy given by $\frac{1}{2}m|\mathbf{v}|^2$.\\
+\\
+Because inner-products with respect to the Minkowski metric are Lorentz invariant, we must have:
+\begin{equation}
+c^2d\tau^2=-\eta_{\mu \nu}dx^\mu dx^\nu 
+\end{equation}
+Thus, with respect to an arbitrary parameter $\lambda$, the action becomes:
+\begin{equation}
+S_0=k\int_{A(\lambda)}^{B(\lambda)}\bigg(-\eta_{\nu \mu} \frac{dx^\mu}{d \lambda}\frac{dx^\nu}{d \lambda}\bigg)^{\frac{1}{2}} d \lambda
+\end{equation}
+\textbf{Note:} Because this integral is invariant under any reparameterisation of $\lambda$, it follows that the action is Lorentz invariant - this is obviously an important property in order for our theory to be consistent! \\
+\\
+By taking $\lambda=t$ and taking the limit as $\mathbf{v} \rightarrow \mathbf{0}$, it can be seen that the \textit{Lagrangian} of this action will reduce to the classical kinetic energy term $\frac{1}{2}mv^2$ if and only if $k=-mc$. So the action is given by:
+\begin{equation}
+S_0=-mc\int_{A(\lambda)}^{B(\lambda)}\bigg(-\eta_{\nu \mu} \frac{dx^\mu}{d \lambda}\frac{dx^\nu}{d \lambda}\bigg)^{\frac{1}{2}} d \lambda
+\end{equation}
+This is analogous to the kinetic energy term of the classical Lagrangian $L=T-V$. We now seek to find the term analogous to the potential $V$. A good approach is to use the \textit{four-vector potential} $A^\mu$:
+\begin{equation}
+S_1=q\int_A^B A_\mu(x^\mu) \ d x^\mu
+\end{equation}
+Where the factor of $q$ appears because we expect the coupling of the electric fields to be proportional to their charge. We emphasise the fact that $A_\mu$ is a function of $x^\mu$ (which is itself a function of $\tau$: $A_\mu(x^\mu(\tau))$). We may again parameterise with respect to some $\lambda(x^\mu)$:
+\begin{equation}
+S_1=q\int_{\lambda(A)}^{\lambda(B)}A_\mu \frac{d x^\mu}{d \lambda} d \lambda
+\end{equation}
+Just like how $\delta S_0$ respects the symmetries of a Lorentz transformation, we desire that $\delta S_1$ respects the symmetries of a \textit{gauge transformation} (see 1.2.2). With $A_\mu \rightarrow A_\mu + \partial_\mu \chi$, subject to fixed end point conditions $\chi(A) = \chi(B) = 0$, the change in the action $\delta S_1$ is given by:
+\begin{align*}
+\delta S_1 &= q \int_{\lambda(A)}^{\lambda(B)} \frac{\partial \chi}{\partial x^\mu}\frac{d x^\mu}{d \lambda} d\lambda \\
+&=q\int_{\lambda(a)}^{\lambda(B)}\frac{d \chi}{d \lambda} d \lambda \\ 
+&=q(\chi(A)-\chi(B)) \\
+&=0
+\end{align*}
+We will now vary the action:\footnote{You may be wondering why we add $S_0$ to $S_1$ when the classical Lagrangian is $L=T-V$. In fact, there is no inconsistency here because $A_\mu$ has its indices lowered, so, if you expand, you will find that we are still subtracting the potential $\phi$.}
+\begin{equation}
+S_0+S_1= \int_{\lambda(A)}^{\lambda(B)}L\bigg(x^\mu, \frac{dx^\mu}{d\lambda}\bigg) \ d\lambda
+\end{equation}
+Where $L$ is the \textit{Lagrangian} given by:
+\begin{equation}
+L\bigg(x^\mu, \frac{dx^\mu}{d\lambda} \bigg)=-mc\bigg(-\eta_{\nu \rho} \frac{dx^\nu}{d\lambda}\frac{dx^\rho}{d\lambda}\bigg)^\frac{1}{2}+qA_\nu \frac{dx^\nu}{d\lambda}
+\end{equation}
+Using the principle of least action and referring back to the Euler-Lagrange equation (2.2), we see that this will be minimised when:
+\begin{equation}
+\frac{\partial L}{\partial x^\mu}-\frac{d}{d\lambda}\bigg(\frac{\partial L}{\partial(\frac{dx^\mu}{d\lambda})}\bigg)=0
+\end{equation}
+We note that:
+\begin{align*}
+\frac{\partial L}{\partial x^\mu} &= \frac{\partial}{\partial x^\mu} \bigg( qA_\nu \frac{d x^nu}{d\lambda} \bigg) = q\frac{\partial A_\nu}{\partial x^\nu}\frac{dx^\nu}{d \lambda} \\
+\frac{\partial L}{\partial (\frac{dx^\mu}{d\lambda})}&=\frac{mc \eta_{\mu \nu} \frac{dx^\nu}{d\lambda}}{\big(-\eta_{\sigma \rho}\frac{dx^\sigma}{d\lambda}\frac{dx^\rho}{d\lambda}\big)^\frac{1}{2}}+qA_\mu
+\end{align*}
+We will now simplify matters by setting $\lambda = \tau$, which we may do because we know that $S_0+S_1$ is invariant under reparameterisations of $\lambda$. Then $\frac{dx^\mu}{d \lambda} \rightarrow \frac{dx^\mu}{d\tau}=U^\mu$, the four-velocity. Recalling that $U_\mu U^\mu = -c^2$, combining the above expressions (2.11) becomes:
+\begin{equation}
+q\partial_\mu A_\nu - \frac{d}{d\tau}(mU_\mu+qA_\mu)=0
+\end{equation}
+By use of the chain rule, we have $\frac{dA_\mu}{d\tau}= \frac{\partial A_\mu}{\partial x^\nu}\frac{dx^\nu}{d\tau}=\partial_\nu A_\mu U^\nu$. Recalling our definition of the Maxwell field-strength tensor $F_{\mu \nu}=\partial_\mu A_\nu - \partial_\nu A_\mu$, we rearrange (2.12) to find:
+\begin{equation}
+\frac{dP_\mu}{d\tau}=qF_{\mu \nu}U^\nu 
+\end{equation}
+Which is the Lorentz force law! We have derived the well known result by the principle of least action. All is good.
+\subsection{Action for Electromagnetic Fields in the Presence of a Fixed Background Source}
+In this section, we will derive Maxwell's equations by considering an appropriate action, just like how we re-discovered the Lorentz force law in the previous section.\\
+\\
+Our action should be of the form $S[A_\mu, \ \partial_\nu A_\mu]$ because it is $A_\mu$ and its derivatives which give rise to EM fields. WE will assume a \textit{fixed background source} $A_\mu$. Now:
+\begin{equation*}
+\text{Particle } \leftrightarrow \text{ Integrate on world-line} \qquad \text{analagous to} \qquad
+\text{Field } \leftrightarrow \text{ Integrate through space}
+\end{equation*}
+Therefore, for a Lagrangian $L$ to be determined, we have:
+\begin{equation}
+S[A_\mu, \ \partial_\nu A_\mu] = \int L \ d^4x
+\end{equation}
+For our theory to be consistent, we require:
+\begin{enumerate}[(1)]
+\item 
+L is \textbf{Lorentz invariant}.
+\item 
+L is \textbf{gauge invariant}.
+\item 
+$L$ is (at most) quadratic in its arguments.\footnote{This is because Maxwell's equations are linear in the fields and potentials, so when we differentiate the Lagrangian as is specified by the Euler-Lagrange equations, these terms must all be linear.}
+\end{enumerate}
+This motivates us to try:
+\begin{equation}
+L=\frac{-1}{4 \pi \mu_0 c}F^{\mu \nu}F_{\mu \nu} + \frac{1}{c}A_\mu J^\mu
+\end{equation}
+We note that (1) is satisfied because all the indices are contracted. Further, it is also easy to see that (3) is satisfied. So now we are left only to verify (2). Under the gauge transformation $A_\mu \rightarrow A_\mu + \partial_\mu \chi$, the change in the action $\delta S_\chi$ is given by:
+\begin{align*}
+\delta S_\chi &= \frac{1}{c} \int \partial _\mu \chi J^\mu \ d^4 x \\
+&=\frac{-1}{c} \int \chi \partial_\mu J^\mu \ d^4x \\
+&=0
+\end{align*}
+Where the first step uses the divergence theorem with the appropriate boundary condition $\chi \rightarrow 0$ as $|x|\rightarrow \infty$ (sufficiently rapidly), and the second step follows from the fact that $\partial_\mu J^\mu =0$, the continuity equation (1.12).\\
+\\
+Applying the principle of least action, we are left with the Euler-Lagrange equation (2.2):
+\begin{equation}
+\frac{\partial L}{\partial A_\mu} - \partial_\nu \bigg(\frac{\partial L}{\partial (\partial_\nu A_\mu)} \bigg)=0
+\end{equation}
+After some computation, we find that:
+\begin{align}
+\begin{split}
+\frac{\partial L}{\partial A_\mu} & = \frac{1}{c}J^\mu \\
+\frac{\partial L}{\partial(\partial_\nu A_\mu)}&=\frac{-1}{\mu_0 c}F^{\nu \nu}
+\end{split}
+\end{align}
+Then, with some index swapping, we find that (2.16) yields:
+\begin{equation}
+\partial_\mu F^{\mu \nu}=-\mu_0 J^\nu
+\end{equation}
+Which is the first of Maxwell's equations (1.8). The second (1.13) is satisfied identically by the definition of the structure of $F_{\mu \nu}$.
+\subsection{EM Fields Coupled to a Point Particle}
+Consider a particle of mass $m$ and charge $q$ following a path $\mathbf{y}(t)$ in an inertial frame. We may write:
+\begin{align}
+\rho(\mathbf{x},t)=q \delta^{(3)}(\mathbf{x}-\mathbf{y}(t)) \\
+\mathbf{J}(\mathbf{x},t)=q\delta^{(3)}(\mathbf{x}-\mathbf{y}(t))\frac{d \mathbf{y}}{dt}
+\end{align}
+Writing $y^\mu = (ct, \mathbf{y}(t))$, this can be repackaged in four-vector form as:
+\begin{equation}
+J^\mu (x)=q\delta^{(3)}(\mathbf{x}-\mathbf{y}(t))\frac{dy^\mu}{dt}
+\end{equation}
+Then, by use of an arbitrary parameter $\lambda$, we may alternatively write this as:
+\begin{equation} \label{particle4current}
+J^\mu(x)=qc \int_{\lambda(A)}^{\lambda(B)}\delta^{(4)}(x-y(\lambda))\frac{dy^\mu}{d\lambda} \ d\lambda
+\end{equation}
+Let's convince ourselves that (2.22) really makes sense, since it is not very obvious. We have:
+\begin{align*}
+J^\mu(x) &= qc\int_{\lambda(A)}^{\lambda{(B)}} \delta(ct-y^0(\lambda))\delta^{(3)}(\mathbf{x}-\mathbf{y}(\lambda))\frac{dy^\mu}{d \lambda} \ d \lambda \\
+&= qc \delta^{(3)}(\mathbf{x}-\mathbf{y}(\lambda))\bigg(\frac{dy^\mu}{d\lambda} \bigg)\bigg(\frac{dy^0}{d\lambda} \bigg)^{-1}\bigg \vert_{y^0=ct} \\
+&=qc\delta^{(3)}(\mathbf{x}-\mathbf{y}(t)) \frac{1}{c} \frac{dy^\mu}{dt} \\
+&=q\delta^{(3)}(\mathbf{x}-\mathbf{y}(t))\frac{dy^\mu}{dt}
+\end{align*}
+The tricky part in the above is going from the first line to the second line. The reasoning behind this step is the fact that for a smooth, invertible function $f:\mathcal{R} \rightarrow \mathbb{R}$ with finitely many zeros labelled by $x^*$, and a function $g:\mathbb{R} \rightarrow \mathbb{R}$ which is well defined at the $x^*$'s, we have $\int \delta(f(x))g(x) \ dx = \sum_{x^*} \frac{g(x^*)}{|f'(x^*)|}$.\\
+\\
+Looking at the second term in the Lagrangian (2.10) we have:
+\begin{align}
+\begin{split}
+\frac{1}{c}\int A_\mu J^\mu \ d^4x &= q\int d^4x \int_{\lambda(A)}^{\lambda(B)}\delta^{(4)}(\mathbf{x}-\mathbf{y}(\lambda)\frac{d y^\mu}{d\lambda}A_\mu(x) \ d\lambda \\
+&=q\int_{\lambda(A)}^{\lambda(B)}A_\mu(\mathbf{y}(\lambda)\frac{d y^\mu}{d\lambda} \ d\lambda 
+\end{split}
+\end{align}
+Which we recognise to be the action $S_1$! (See (2.8)). Thus, defining a third action from the remaining term in the Lagrangian (2.10):
+\begin{equation}
+S_2=\frac{-1}{4\mu_0 c}\int F_{\mu \nu}F^{\mu \nu} \ d^4x
+\end{equation}
+We have the complete \textit{relativistic electromagnetic action} given by:
+\begin{equation}
+S=S_0+S_1+S_2
+\end{equation}
+Which we minimise by varying over $A_\mu$ and $x^\mu(\lambda)$. Then $\delta S=0$ gives rise to Maxwell's equations and the Lorentz force law, with $J^\mu$ being that for a point particle.\footnote{\textbf{Note}: We may sum this expression over multiple particles to give the same results.}
+\subsection{Energy and Momentum in Electromagnetism}
+Recall from 1B Electromagnetism that the electromagnetic field carries an \textit{energy density} given by:
+\begin{equation}
+\mathcal{E} = \frac{\epsilon_0}{2}|\mathbf{E}|^2+\frac{1}{2\mu_0}|\mathbf{B}|^2
+\end{equation}
+We also know that an electromagnetic field does \textit{work} on a point charge $q$ moving at velocity $\mathbf{v}$:
+\begin{equation}
+\dot{W}=q\mathbf{E}\cdot \mathbf{v}
+\end{equation}
+In continuum, the above becomes:
+\begin{equation}
+\dot{\mathcal{W}}=\mathbf{J}\cdot \mathbf{E}
+\end{equation}
+Where $\mathcal{W}$ is the work per unit volume.\\
+\\
+Now, we expect energy to be conserved (i.e. "EM energy + mechanical energy = constant"), and the only way the energy within a fixed volume may change is by it entering and leaving the system. Therefore, we will consider the quantity $\dot{\mathcal{E}}+\dot{\mathcal{W}}$. It is left to the reader as an exercise to verify:
+\begin{equation}
+\mathbf{J}\cdot \mathbf{E}= -\frac{\partial \mathcal{E}}{\partial t}- \nabla \cdot \mathbf{N}
+\end{equation}
+Where $\mathbf{N}$ is the \textit{Poynting vector}, given by:
+\begin{equation}
+\mathbf{N}=\frac{1}{\mu_0}\mathbf{E} \times \mathbf{B}
+\end{equation}
+It follows that:
+\begin{equation}
+\frac{\partial \mathcal{E}}{\partial t}+\nabla \cdot \mathbf{N}= - \mathbf{J}\cdot \mathbf{E}
+\end{equation}
+This equation represents the local conservation of energy. To see this, we note that we may interpret $\mathbf{N} \cdot d\mathbf{S}$ as the energy flux through a small area $d\mathbf{S}$, and so by use of the divergence theorem over an arbitrary volume $V$ we have:
+\begin{align}
+\begin{split}
+\frac{d}{dt}\int_V\mathcal{E} \ dV + \int_V \mathbf{J} \cdot \mathbf{E} \ dV &= - \int_{\partial V} \mathbf{N} \cdot d\mathbf{S}\\
+\text{i.e.} \qquad \frac{d}{dt} \text{(EM energy in V)} + \frac{d}{dt} \text{(Mechanical energy in V)} &= -\text{(Energy flux through V)}
+\end{split}
+\end{align}
+We will now do a similar analysis for \textit{momentum conservation}. Recall the equation (1.7), the continuum version of the Lorentz force law, is $\mathbf{f}=\rho \mathbf{E}+\mathbf{J}\times \mathbf{B}$, where $\mathbf{f}$ is the \textit{force density} (the rate of change of mechanical momentum per unit volume). We use the Maxwell equations $\rho=\epsilon_0 \nabla \cdot \mathbf{E}$ and $\mathbf{J}=\frac{1}{\mu_0} \nabla \times \mathbf{B} - \epsilon_0 \frac{\partial \mathbf{E}}{\partial t}$ to eliminate sources in the above and find:
+\begin{equation}
+\mathbf{f}=\epsilon_0 \mathbf{E} (\nabla \cdot \mathbf{E}) + \frac{1}{\mu_0}(\nabla \times \mathbf{B})\times \mathbf{B}-\epsilon_0 \frac{\partial \mathbf{E}}{\partial t}\times \mathbf{B}
+\end{equation}
+We now identify $(\nabla \times \mathbf{B})\times \mathbf{B}=(\mathbf{B}\cdot \nabla)\mathbf{B}-\frac{1}{2}\nabla(|\mathbf{B}|^2)$ and a similar expression for $\mathbf{E}$, along with the fact $\frac{\partial \mathbf{E}}{\partial t} \times \mathbf{B}= \frac{\partial}{\partial t} (\mathbf{E} \times \mathbf{B})+\frac{1}{2}\nabla(|\mathbf{E}|^2)-(\mathbf{E}\cdot\nabla)\mathbf{E}$ (which requires Maxwell equation (1.3) to derive) to find:
+\begin{equation}
+\mathbf{f} = \epsilon_0 \mathbf{E}(\nabla \cdot \mathbf{E})+\frac{1}{\mu_0}((\mathbf{B}\cdot \nabla) \mathbf{B}-\frac{1}{2}\nabla(|\mathbf{B}|^2))-\epsilon_0\bigg(\frac{\partial}{\partial t}(\mathbf{E}\times \mathbf{B})+\frac{1}{2}\nabla(|\mathbf{E}|^2)-(\mathbf{E}\cdot \nabla)\mathbf{E} \bigg)
+\end{equation}
+It is also convenient to add $\frac{1}{\mu_0} \mathbf{B} (\nabla \cdot \mathbf{B})=0$ (by Maxwell (1.2)) to this equation, so that we get:
+\begin{equation}
+\mathbf{f}= \epsilon_0\big[(\mathbf{E}\cdot \nabla)\mathbf{E}+\mathbf{E}(\nabla \cdot \mathbf{E})-\frac{1}{2}\nabla(|\mathbf{E}|^2)\big]+\frac{1}{\mu_0}\big[(\mathbf{B}\cdot \nabla)\mathbf{B}+\mathbf{B}(\nabla \cdot \mathbf{B})-\frac{1}{2}\nabla(|\mathbf{B}|^2)\big]-\epsilon_0 \frac{\partial}{\partial t}(\mathbf{E}\times \mathbf{B})
+\end{equation}
+We note that the bracketed terms are total derivatives, that is:
+\begin{align}
+\begin{split}
+[(\mathbf{E}\cdot \nabla)\mathbf{E}+\mathbf{E}(\nabla \cdot \mathbf{E})-\frac{1}{2}\nabla(|\mathbf{E}|^2)\big]_j &= \frac{\partial}{\partial x_i} \big[E_iE_j - \frac{1}{2} \delta_{ij} |\mathbf{E}|^2 \big] \\
+[(\mathbf{B}\cdot \nabla)\mathbf{B}+\mathbf{B}(\nabla \cdot \mathbf{B})-\frac{1}{2}\nabla(|\mathbf{B}|^2)\big]_j &= \frac{\partial}{\partial x_i} \big[B_iB_j - \frac{1}{2} \delta_{ij} |\mathbf{B}|^2 \big]
+\end{split}
+\end{align}
+Therefore (2.35) becomes:
+\begin{equation}
+\mathbf{f}=\frac{\partial}{\partial x_i} \bigg(\epsilon_0(E_iE_j - \frac{1}{2} \delta_{ij} |\mathbf{E}|^2)+\frac{1}{\mu_0}(B_iB_j - \frac{1}{2}\delta_{ij}|\mathbf{B}|^2) \bigg) - \epsilon_0 \frac{\partial}{\partial t}(\mathbf{E} \times \mathbf{B})
+\end{equation}
+We now define the \textit{momentum density} $\mathbf{g}$ and \textit{Maxwell stress tensor} $\sigma$ respectively as:
+\begin{align}
+\mathbf{g}&=\epsilon_0 (\mathbf{E}\times \mathbf{B}) \\
+\sigma_{ij} &= -\epsilon_0(E_iE_j - \frac{1}{2} \delta_{ij} |\mathbf{E}|^2)-\frac{1}{\mu_0}(B_iB_j - \frac{1}{2}\delta_{ij}|\mathbf{B}|^2)
+\end{align}
+We thus have the \textit{local conservation law}:
+\begin{equation}
+\frac{\partial g_i}{\partial t} + \frac{\partial \sigma_{ij}}{\partial x_j} = -(\rho \mathbf{E}+\mathbf{J} \times \mathbf{B})_i \qquad (=-f_i)
+\end{equation}
+The stress tensor $\sigma$ encodes flux of momentum curled by te EM field. In particular, $\sigma_{ij}dS_j$ is the total flux of the $i^{th}$ component of momentum through the surface $d\mathbf{S}$. Using the divergence theorem and integrating over an arbitrary volume $V$, we have:
+\begin{align}
+\begin{split}
+\frac{d}{dt}\int_V g_i \ dV + \int_V f_i \ dV &= - \int_{\partial V} \sigma_{ij} \ dS_j \\
+\text{i.e.} \qquad \frac{d}{dt} \text{(mom. of EM field in V)}+\frac{d}{dt} \text{(mechanical mom. in V)} &= -\frac{d}{dt} \text{(flux of mom. through V)}
+\end{split}
+\end{align}
+\subsection{The Stress Energy Tensor}
+In a relativistic theory, the components $\mathcal{E}, \ N_i, \ g_j$ and $\sigma_{ij}$ ($i,j=1,2,3$) of energy/momentum density/flux may be combined to form a (2,0) Lorentz tensor, the \textit{stress-energy tensor}:
+\begin{equation}
+T^{\mu \nu} = 
+\begin{pmatrix}
+\mathcal{E} & cg_1 & cg_2 & cg_3 \\[1pt]
+\frac{N_1}{c} & \sigma_{11} & \sigma_{12} & \sigma_{13} \\[4pt]
+\frac{N_2}{c} & \sigma_{21} & \sigma_{22} & \sigma_{23} \\[4pt]
+\frac{N_3}{c} & \sigma_{31} & \sigma_{32} & \sigma_{33} 
+\end{pmatrix}
+\end{equation}
+\textbf{Exercise}: By considering (WLOG) a boost along the x-axis from an inertial frame with $\mathcal{E}=mc^2n_0$, $N=g=\sigma=0$ (where $n_0$ is the number-density of particles), show that $T^{\mu\nu}$ does indeed transform as a Lorentz (2,0) tensor, that is $T'^{\mu\nu}=\Lambda^\mu_{\ \alpha} \Lambda^\nu_{\ \beta}T^{\alpha \beta}$.\\
+\\
+Note that because $\mathbf{g}=\epsilon_0(\mathbf{E}\times \mathbf{B})=\epsilon_0\mu_0(\frac{1}{\mu_0}\mathbf{E}\times \mathbf{B})=\frac{1}{c^2}\mathbf{N}$, $T_{\mu\nu}$ is symmetric. Furthermore, it is also traceless in the sense:
+\begin{equation}
+\eta_{\mu \nu}F^{\mu \nu}=-\mathcal{E}+\sum_{i=1}^{3}\sigma_{ii} = 0 
+\end{equation}
+(This is because there is no rest frame for EM energy density in a vacuum, a photon is massless).\\
+\\
+It is left as an exercise to verify:
+\begin{equation}
+T^{\mu \nu}=\frac{1}{\mu_0}\big(F^{\mu\alpha}F^\nu_{ \ \alpha} - \frac{1}{4}\eta^{\mu \nu}F^{\alpha \beta}F_{\alpha \beta} \big)
+\end{equation}
+\subsection{Local Conservation Law for Energy/Momentum}
+We expect, from previous work on conservation laws (i.e. (1.12)) that $\partial_\mu T^{\mu \nu}=$ "something". Let's do a direct calculation:
+\begin{align}
+\begin{split}
+\partial_\mu T^{\mu \nu}&=\frac{1}{\mu_0}\partial_\mu\big(F^{\mu\alpha}F^\nu_{ \ \alpha} - \frac{1}{4}\eta^{\mu \nu}F^{\alpha \beta}F_{\alpha \beta} \big) \\
+&=\frac{1}{\mu_0}\bigg(\partial_\mu F^{\mu \alpha} \bigg)+\frac{1}{\mu_0}F^{\mu \nu}\partial_\mu F^\nu_{\ \alpha} - \frac{1}{2\mu_0}\eta^{\mu \nu}F^{\alpha \beta}\partial_\mu F_{\alpha \beta} \\
+&=-J^\alpha F^\nu_{\ \alpha}+\frac{1}{2\mu_0}\big(2F^{\mu \alpha}\partial_\mu F^\nu_{\ \alpha} - F^{\alpha \beta} \partial^{\nu}F_{\alpha \beta} \big) \\
+&=-J^\alpha F^\nu_{\ \alpha} -\frac{1}{2\mu_0}F^{\alpha \beta}\big(\partial_\alpha F_{\beta \nu} + \partial_\beta F_{\nu \alpha} + \partial_\nu F_{\alpha \beta} \big) \\
+&=-J^\alpha F^\nu_{\ \alpha} 
+\end{split}
+\end{align}
+Where in the second line we used the first of Maxwell's equations in relativistic form (see (1.8)) $\partial_\mu F^{\mu \nu} = - \mu_0 J^\nu$, in the fourth line we relabelled indices and used the antisymmetry of $F_{\mu \nu}$, and finally used the second Maxwell equation (1.9) $\partial_\alpha F_{\beta \nu} + \partial_\beta F_{\nu \alpha} + \partial_\nu F_{\alpha \beta}=0$.\\
+\\
+We therefore have the conservation equation:
+\begin{equation}
+\partial_\mu T^{\mu \nu} + F^\nu_{\ \alpha}J^\alpha = 0
+\end{equation}
+
+\section{Radiation}
+Consider a four vector potential $A^\mu(x)$ generated by an arbitrary source $J_\mu(x)$. Maxwell (\ref{M1}) says $\partial_\nu F_{\nu \mu} = -\mu_0J^\nu$. Setting $F^{\mu\nu}=\partial^\mu A^\nu - \partial^\nu A^\mu$, we get:
+\begin{equation} \label{eq1}
+\square A^\mu - \partial^\mu(\partial_\nu A^\nu) = -\mu_0 J^\mu
+\end{equation} 
+Where $\square$ is the \textbf{wave operator}, given by:
+\begin{equation}
+\square = \eta^{\sigma \nu}\partial_\sigma \partial_\nu = \nabla^2 - \frac{1}{c^2} \frac{\partial^2}{\partial t^2}
+\end{equation}
+Now we want to chose our gauge so that the second term on the left hand side of the above equation vanishes, because then we are left with a more familiar looking 'forced wave equation'. To do this we use the \textbf{Lorenz gauge}, $A^\mu \rightarrow A^\mu+\partial^\mu \chi$, where:
+\begin{equation} \label{gauge}
+\square \chi = -\partial_\mu A^\mu
+\end{equation}
+With this choice of gauge, the equation (\ref{eq1}) becomes:
+\begin{equation} \label{eq2}
+\square A^\mu = -\mu_0 J^\mu
+\end{equation}
+We need to make sure we can actually solve the equations (\ref{gauge}) and (\ref{eq2}) above in order for us to have made any progress. Fortunately, we can always solve them - to see this, we'll kill two birds with one stone and solve both these equations using the same method.\\
+\\
+We note that the equation $\square A^\mu = -\mu_0J^\mu$ is just four copies of an equation of the form $\square y = f(x^\mu)$, whilst the Lorenz gauge condtion (\ref{gauge}) is exactly in this form already. Now, to solve an equation of this form:\\
+\\
+\textbf{Fourier transform with respect to time:} Setting $\tilde{y} = \int_{-\infty}^{\infty}y(t,\mathbf{x})e^{-i \omega t} \ dt$ and similarly for $f$ gives:
+\begin{equation}
+(\nabla^2+k^2)\tilde{y} = \tilde{f} \qquad \text{where } \omega = k/c
+\end{equation}
+\textbf{Find the Green's function} for the differential operator $\nabla^2 + k^2$, i.e. $G(\bm{x};\bm{x}')$ satisfying:
+\begin{equation}
+(\nabla^2 + k^2)G(\bm{x};\bm{x}') = \delta^{3}(\bm{x}-\bm{x}')
+\end{equation}
+To do this set $r=|\bm{x}-\bm{x}'|$ and assume rotational and translational symmetry, and $G(r) \rightarrow 0$ as $r \rightarrow \infty$. Transforming the Laplacian operator to spherical polar coordinates we thus get:
+\begin{equation}
+\frac{1}{r^2}\frac{\partial}{\partial r}\bigg(r^2 \frac{\partial G}{\partial r}\bigg)+k^2G = 0 \implies G_\pm(r) = -\frac{A}{r}e^{\pm ikr}
+\end{equation}
+Integrating $\nabla^2 G$ over a ball from $\epsilon$ to $R$ and taking $\epsilon \rightarrow 0$ and $R \rightarrow \infty$ tells us the value of the constant $A$ is $1/4\pi$. Thus, we have found the two Green's functions:
+\begin{equation} \label{greensfunc}
+G_\pm(\bm{x};\bm{x}') = \frac{-1}{4\pi} \frac{exp(\pm ik |\bm{x}-\bm{x}')}{|\bm{x}-\bm{x}'|}
+\end{equation}
+We consider the negative solution to the above\footnote{It turns out this will give us a causal structure of events in the past; the positive solution would give us the acausal propagation of information.} to get the general solution:
+\begin{equation}
+\tilde{y}(\omega,\bm{x}) = \frac{-1}{4\pi}\int \tilde{f}(\bm{x},k)\frac{\exp(-ik |\bm{x}- \bm{x}'|)}{|\bm{x}-\bm{x}'|} \ d^3\bm{x}'
+\end{equation}
+\textbf{Invert the Fourier transform} to find that the general solution is:
+\begin{equation}
+y(t,\bm{x})=\frac{-1}{4\pi} \int \frac{f(t-|\bm{x}-\bm{x}'|/c)}{|\bm{x}-\bm{x}'|} \ d^3 \bm{x}'
+\end{equation}
+Therefore $\chi$ may be found in the manner described above, and we also find that the solution for $A^\mu$ in the Lorenz gauge is given by:
+\begin{empheq}[box=\fbox]{equation} \label{vecpot}
+A^\mu(t,\bm{x})=\frac{\mu_0}{4\pi} \int \frac{J^\mu(t_{ret},\bm{x}')}{|\bm{x}-\bm{x}'|} \ d^3 \bm{x}'
+\end{empheq}
+Where $t_{ret}=t-|\bm{x}-\bm{x}'|/c$ is the \textbf{retarded time}. Notice that this expression encodes \textbf{causality} - signals can only travel as fast as the speed of light. We can better understand this by representing the integral as one over the past light cone of the point $(t, \bm{x})$ in space time.\\
+\begin{wrapfigure}{r}{0.3 \textwidth}
+	\includegraphics{lightcone}
+	\caption{A diagram of a light cone. [\ref{lightcone}]}
+\end{wrapfigure}
+We denote the surface of the future and past light cones originating at a point $\bm{x^\mu}$ as $w^+_{x^\mu}$ and $w^-_{x^\mu}$ respectively. In particular:
+\begin{equation}
+w^-_{x^\mu} = \{ y^\mu \in \mathbb{R}^{3+1} \ | \ y^0 < x^0 \ , \ \eta_{\mu \nu}(x^\mu - y^\mu )(x^\nu -y^\nu) = 0 \}
+\end{equation}
+The first condition $y^0 < x^0$ says that these events happened before the time $x^0$, i.e. in the past part of the light cone, whilst the second $\eta_{\mu \nu}(x^\mu - y^\mu )(x^\nu -y^\nu)=0$ says that $y^\mu$ and $x^\mu$ are null separated, which is the condition to be on the surface of the light cone.\\
+\\
+Let $f(y^0,\bm{y}) = \eta_{\mu \nu}(x^\mu - y^\mu )(x^\nu -y^\nu)$ and note that:
+\begin{equation*}
+f(y^0, \bm{y})=0 \iff (x^0-y^0 - |\bm{x} - \bm{y}|)(x^0 - y^0 + |\bm{x}-\bm{y}|)=0
+\end{equation*}
+Where $\bm{x}_i = x^i$ for $i=1,2,3$, and similarly for $\bm{y}$. Furthermore, for any sufficiently smooth $f(y)$ with roots at $y_i^*$ for $i=1,2,...,n$:
+\begin{equation}\label{deltasum}
+\delta(f(y)) = \sum_{i=1}^{n} \frac{\delta(y-y_i^*)}{|f'(y_i^*)|}
+\end{equation}
+Thus, noticing that $\partial f/ \partial y^0 = 2(x^0 - y^0)$, so that:
+\begin{equation*}
+\frac{\partial f}{\partial y^0}\bigg|_{y^0 = y^0_\pm} = \mp 2|\bm{x}-\bm{y}| \qquad \text{where } f(y^0_\pm, \bm{y}) =0 \ , \text{ i.e. } y^0_\pm \text{ are the zeros of } f.
+\end{equation*}
+Combining all of the above we conclude:
+\begin{equation}
+\delta(\eta_{\mu \nu}(x^\mu - y^\mu )(x^\nu -y^\nu)) = \frac{\delta(x^0 - y^0 +|\bm{x}-\bm{y}| )}{2|\bm{x}- \bm{y}|} + \frac{\delta(x^0 -y^0 - |\bm{x}-\bm{y}|)}{2|\bm{x}-\bm{y}|}
+\end{equation}
+Finally, introducing the Heaviside step function $H$ into this framework gives:
+\begin{equation} \label{eq3}
+\delta(\eta_{\mu \nu}(x^\mu - y^\mu )(x^\nu -y^\nu))H(x^0-y^0) = \frac{\delta(x^0 -y^0+|\bm{x}- \bm{y}|)}{2|\bm{x}-\bm{y}|}
+\end{equation}
+Hence, substituting this into the result (\ref{vecpot}) we get:
+\begin{align} \label{vecpot3}
+\begin{split}
+A^\mu(x^\nu) &= \frac{\mu_0}{4 \pi} \int \int \frac{\delta (y^0 - c t_{ret})}{|\bm{x}-\bm{y}|} J^\mu(y) \ d^3 \bm{y} dy^0 \\
+&= \frac{\mu_0}{4 \pi} \int \frac{\delta (y^0 - x^0 + |\bm{x} - \bm{y}|)}{|\bm{x}-\bm{y}|} J^\mu(y) \ d^4y \\
+& = \frac{\mu_0}{2 \pi} \int \delta(\eta_{\mu \nu}(x^\mu - y^\mu )(x^\nu -y^\nu))H(x^0-y^0) J^\mu(y) \ d^4y \\
+&=: \frac{\mu_0}{2 \pi} \int_{w^-_{x^\mu}} J^\mu(y) \ d^3 y
+\end{split}
+\end{align}
+(Notice that the last line is a "by definition" statement). The "+" solution from when we derived the Greens function (\ref{greensfunc}) gives an acausal propagation.\\
+\subsection{Radiation in dipole approximation}
+\begin{wrapfigure}[10]{r}{0.3 \textwidth}
+	\includegraphics[scale=0.3]{source}
+\end{wrapfigure}
+Consider the radiation due to a point $J^\mu$ supported in some region $V_a$ of size $a$, containing the origin. Setting $r = |\b,{x}|$, for $r \gg a$ we have the approximation:
+\begin{equation}
+|\bm{x} - \bm{X}'| \approx r - \bm{x} \cdot \bm{x}' + \mathcal{O}(a/r)
+\end{equation}
+On the other-hand, we have:
+\begin{equation}
+\bm{J}\bigg(t-\frac{|\bm{x}-\bm{x}'}{c}, \bm{x}' \bigg) \approx \bm{J}\bigg( t-\frac{r}{c},\bm{x}' \bigg) + \frac{\bm{x}\cdot \bm{x}'}{c} \dot{\bm{J}}\bigg( t- \frac{r}{c} , \bm{X}' \bigg) + ...
+\end{equation}
+Now, if $\bm{J}$ oscillates at a characteristic frequency $\omega$, then the second term in the expansion above is suppressed by $\omega a /c$ compared to the first. \\
+Hence, for $r \gg a$ and $\omega \ll c/a$, we can approximate our result (\ref{vecpot}) for the vector potential by:
+\begin{equation} \label{vecpot2}
+\bm{A}(t, \bm{x}) \approx \frac{\mu_0}{4\pi r} \int \bm{J}\bigg( t - \frac{r}{c}, \bm{x}'\bigg) \ d^3 \bm{x}'
+\end{equation}
+Recall now that for a general charge distribution the \textbf{electric dipole moment is defined as}:
+\begin{equation}
+\bm{p} = \int \rho(t, \bm{x}) \bm{x} \ d^3 \bm{x}
+\end{equation}
+(It follows that a point charge has electric dipole moment $\bm{p} = q \bm{x}$). Charge conservation (\ref{ceq}) gives:
+\begin{align}
+\begin{split}
+\dot{\bm{p}}(t) &= \int \frac{\partial \rho(t, \bm{x})}{\partial t}\bm{x} \ d^3 \bm{x} \\
+&=- \int (\nabla \cdot \bm{J}) \bm{x} \ d^3 \bm{x} \\
+&= - \int \bm{x} (\bm{J} \cdot d\bm{S}) + \int (\bm{J} \cdot \nabla) \bm{x} \ d^3 \bm{x} \qquad (\text{By the Divergence Theorem.})\\
+&= \int \bm{J}(t \bm{x}) \ d^3 \bm{x} \qquad (\text{Drop surface term for localised source.})
+\end{split}
+\end{align}
+Hence, (\ref{vecpot2}) becomes:
+\begin{equation}
+\bm{A}(t,\bm{x}) \approx \frac{\mu_0}{4 \pi r} \dot{\bm{p}} \bigg(t - \frac{r}{c} \bigg)
+\end{equation}
+We calculate $\bm{B} = \nabla \times \bm{A}$ to get:
+\begin{equation}
+\bm{B} = \frac{-\mu_0}{4 \pi r^2} \bigg[ \hat{\bm{x}} \times \dot{\bm{p}}\bigg(t- \frac{r}{c} \bigg) + \frac{r}{c} \hat{\bm{x}} \times \ddot{\bm{p}}\bigg( t - \frac{r}{c} \bigg) \bigg]
+\end{equation}
+If we assume the dipole oscillates with characteristic frequency $\omega$, second term will scale like $\omega r / c$ times the first and will dominate provided $r \gg c / \omega$. So in this regime we get:
+\begin{equation}
+\bm{B} (t , \bm{x}) = \frac{-\mu_0}{4 \pi r c} \hat{\bm{x}} \times \ddot{\bm{p}} \bigg( t - \frac{r}{c} \bigg)
+\end{equation}
+We find the Electric field by solving Maxwell equation (\ref{max4}) and again assuming $r \gg c / \omega$ to get:
+\begin{align}
+\frac{\partial \bm{E}}{\partial t} &= - \frac{\mu_0 c}{4\pi} \nabla \times \bigg( \frac{\hat{\bm{x}}}{r} \times \ddot{\bm{p}}\bigg( t - \frac{r}{c} \bigg)\bigg) \\
+& \approx \frac{\mu_0 c}{4\pi} \bigg[ \hat{\bm{x}} \times \bigg( \hat{\bm{x}} \times \dddot{\bm{p}}\bigg(t- \frac{r}{c}\bigg)\bigg) \bigg]\\
+\implies \bm{E}(t , \bm{x} ) &\approx \bm{E}_{static}(\bm{x}) + \frac{\mu_0 c}{4\pi} \bigg[ \hat{\bm{x}} \times \bigg( \hat{\bm{x}} \times \ddot{\bm{p}}\bigg(t- \frac{r}{c}\bigg)\bigg) \bigg]
+\end{align}
+It is not difficult to see, by use of (\ref{max1}) that as $r \rightarrow \infty$ we get:
+\begin{equation}
+\bm{E}_{static} \sim \frac{\hat{\bm{x}}}{4 \pi \epsilon_0 r^2}Q \qquad \text{where  } Q=\int \rho(\bm{x},t) \ d^3\bm{x}
+\end{equation}
+(Note that $Q$ is the total charge, which is time independent). In summary, we have $\bm{E}(t, \bm{x}) = \bm{E}_{static}(\bm{x}) + \bm{E}_{rad}(t, \bm{x})$ and $B(t, \bm{x}) = \bm{B}_{rad}(t, \bm{x})$, where:
+\begin{empheq}[box=\fbox]{align} \label{dipolesummary}
+\begin{split}
+\bm{B}_{rad}(t , \bm{x}) &= \frac{-\mu_0}{4 \pi r c} \hat{\bm{x}} \times \ddot{\bm{p}}\bigg(t- \frac{r}{c}\bigg) \\
+\bm{E}_{rad}(t , \bm{x}) &= -c \hat{\bm{x}} \times \bm{B}_{rad}(t , \bm{x}) \\
+\text{for  } & r \gg \frac{c}{\omega} \gg a
+\end{split}
+\end{empheq}
+\subsection{The Larmor Formula}
+For a particle following a trajectory $\bm{x}(t)$, it has a dipole given by $\bm{p}(t)= q\bm{x}(t)$. Hence the power radiated through a sphere of radius $R$, centred at $\bm{x}(t-R/c)$ is given by the \textbf{Larmor formula}:
+\begin{empheq}[box=\fbox]{equation} \label{Larmor}
+\mathcal{P}(t) = \frac{\mu_0}{6 \pi c} \bigg | \ddot{\bm{p}}\bigg(t- \frac{R}{c}\bigg) \bigg|^2 = \frac{\mu_0 q^2}{6 \pi c}\bigg| \bm{a}\bigg(t - \frac{R}{c} \bigg) \bigg|^2
+\end{empheq}
+Where $\bm{a}(t)$ is the acceleration of the particle. This is computed by considering the \textbf{Poynting vector} $\bm{S} = 1/\mu_0 \bm{E} \times \bm{B}$ with the fields as in (\ref{dipolesummary}).\\
+\\
+\subsubsection{Instability of the classical Hydrogen Atom}
+An electron moves in a coulomb fields at the nucleus:
+\begin{equation}
+m_e \ddot{\bm{x}} = \frac{-e^2}{4\pi \epsilon_0} \frac{\hat{\bm{x}}}{r^2}
+\end{equation}
+The dipole moment of the electron is $\bm{p}(t) = e\bm{x}(t)$, so using the above we find that:
+\begin{equation}\label{poweremit}
+\ddot{\bm{p}}(t) = \frac{-e^3}{4\pi \epsilon_0 m_e r^2}\hat{\bm{x}} \implies \mathcal{P}(t) = \frac{\mu_0}{6\pi c}\bigg(\frac{e^3}{4 \pi \epsilon_0 m_e r^2}\bigg)^2
+\end{equation}
+For simplicity, assume that the electron moves in a circular orbit, so its energy is given by:
+\begin{equation}
+E(r) = \frac{1}{2} m_e |\dot{\bm{x}}|^2 - \frac{e^2}{4\pi \epsilon_0r} = \frac{-e^2}{8\pi \epsilon_0 r}
+\end{equation}
+The radius $r(t)$ will decrease due to the power radiated due to emission, so using (\ref{poweremit}) we see that:
+\begin{equation}
+\frac{dE}{dt} = - \mathcal{P} \implies \dot{r} = \frac{-\mu_0 e^4}{12 \pi^2 c \epsilon_0 m_e^2 r^2}
+\end{equation}
+It is then easy to see that starting at a radius $r_0$ at $t=0$, the electron will reach the nucleus in a finite time given by:
+\begin{equation}
+T = \int_0^T dt = \int_{r_0}^0 \frac{1}{\dot{r}} \ dr = \frac{4 \pi^2 \epsilon_0 m_e^2 r_0^3}{\mu_0 e^4}
+\end{equation}
+Setting $r_0 = 5 \times 10^{-11}$m ($\approx$ Bohr radius of $H$ atom) we get $T \approx 10^{-11}$s, so the classical atom is unstable. This issue is solved by Quantum Mechanics.
+\subsection{Scattering}
+\subsubsection{Thomson Scattering}
+Consider electromagnetic radiation incident on a free electron (at position $\bm{x}(t)$), with waveform $\bm{E} =\bm{E}_0 \sin (\bm{k} \cdot \bm{x} - \omega t)$, $\omega = c\bm{k}$. From the Lorentz force law, the electron's equation of motion is:
+\begin{equation}
+m_e \ddot{\bm{x}} = -e \bm{E} = -e\bm{E_0}\sin(\bm{k}\cdot\bm{x}(t)-\omega t)
+\end{equation}
+See that the electron will undergo oscillations of amplitude $A \propto |\bm{E}_0|$. If $A \ll \lambda = 2\pi/|\bm{k}|$ then we can safely evaluate $\bm{E}(\bm{x}(t),t)$ to be at the average position $\langle \bm{x} \rangle = \bm{0}$ (place origin at the electron). With this approximation we deduce that the solution to the above is:
+\begin{equation}
+\bm{x}(t) = -\frac{e}{\omega^2 m_e} \bm{E}_0 \sin(\omega t)
+\end{equation}
+We may check that the approximation $A \ll \lambda$ is valid since $A = e|\bm{E}_0|/(\omega^2 m_e) = v/\omega \ll c \implies A \ll \lambda = 2\pi c / \omega$, where $v$ is the velocity of the electron which is assumed to be moving at speeds much less than $c$. Using the fact that the oscillating electron has dipole moment $\bm{p} = -e \bm{x}(t)$, substitution into the Larmor formula (\ref{Larmor}) to deduce that radiation is emitted by the electron with power:
+\begin{equation}
+\mathcal{P}(t) = \frac{\mu_0 e^4}{6 \pi c m_e^2} |\bm{E}_0|^2 \sin^2(\omega t - kR)
+\end{equation}
+(Power emitted through a sphere of radius $R$ centred at the electron.) Averaging this over one cycle, we find that:
+\begin{equation}
+\langle \mathcal{P} \rangle = \frac{\omega}{2 \pi} \int_0^{2\pi/ \omega} \frac{\mu_0e^4}{6 \pi c m_e^2}|\bm{E}_0|^2 \sin^2(\omega t -kR) \ dt = \frac{\mu_0 e^4}{12 \pi c m_e^2} |\bm{E}_0|^2
+\end{equation}
+This process corresponds to scattering of the incident radiation by the electron, called \textbf{Thomson scattering}. The incident energy flux is given by considering the Poynting vector:
+\begin{align}
+\begin{split}
+|\bm{S}| = \frac{1}{\mu_0}| \bm{E} \times \bm{B}| &= \frac{|\bm{E}_0|^2}{\mu_0c} \sin^2(\omega t) \\
+\implies \langle |\bm{S}| \rangle &= \frac{|\bm{E}_0|^2}{2 \mu_0 c} 
+\end{split}
+\end{align}
+The amount of scattering is characterised by the \textbf{cross section}:
+\begin{equation}
+\sigma := \frac{\langle \mathcal{P} \rangle}{\langle |\bm{S}| \rangle} = \frac{\mu_0^2e^4}{6 \pi m_e^2}
+\end{equation}
+\subsubsection{Rayleigh Scattering}
+A similar process to Thomson scattering, but this time it is scattering of EM radiation off bound electrons in a neutral system. Assume that the material the wave is passing through has a dipole moment of the form:
+\begin{equation}
+\bm{P}(t) = \alpha \bm{E}(t)
+\end{equation}
+Where $\alpha$ is some medium dependant constant of proportionality called the \textbf{polarisability} (see (\ref{linear dielectric}) in the next section). For an incident wave of the form $\bm{E} =\bm{E}_0 \sin (\bm{k} \cdot \bm{x} - \omega t)$ and again using the Larmor formula (\ref{Larmor}) we thus have:
+\begin{equation}
+\ddot{\bm{p}}(t) = - \alpha \omega^2 \bm{E} \implies \langle \mathcal{P} \rangle = \frac{\alpha \mu_0 \omega^2}{12 \pi c}|\bm{E}_0|^2
+\end{equation}
+Hence the cross section is:
+\begin{equation}
+\sigma = \frac{\alpha^2 \omega ^4 \mu_0^2}{6\pi} \sim \frac{1}{\lambda^4}
+\end{equation}
+So \textbf{scattering is enhanced at short wavelength}. This is why the sky is blue and sunsets are red.
+\subsection{Radiation From a Point Charge}
+Consider a relativistic point particle of charge $q$ moving along a worldline $\Gamma$. We will parametrise its trajectory by $y^\mu = y^\mu(\tau)$. Recall equation (\ref{particle4current}), which says that the four current due to this particle is:
+\begin{equation*}
+J^\mu(x)=qc \int_{\tau(A)}^{\tau(B)}\delta^{(4)}(x-y(\tau))\frac{dy^\mu}{d\tau} \ d\tau
+\end{equation*}
+Substituting this expression into the retarded potential in the first line of (\ref{vecpot3}) we find that:
+\begin{align} \label{vecpot4}
+\begin{split}
+A^\mu(t,\bm{x})&=\frac{\mu_0qc}{4\pi} \int \delta^{(4)}\big(z-y(\tau)\big) \dot{y}^\mu(\tau) \frac{\delta(x^0-z^0)-|\bm{x}-\bm{z}|}{|\bm{x}-\bm{z}|} \ d^4z d\tau \\
+&= \frac{\mu_0 q c}{4 \pi} \int \dot{y}^\mu (\tau) \frac{\delta(x^0 - y^0(\tau) - |\bm{x} - \bm{y}(\tau)|)}{|\bm{x} -\bm{y}(\tau)|} \ d\tau
+\end{split}
+\end{align}
+Recalling the result (\ref{eq3}) and (\ref{deltasum}), we may write:
+\begin{align}
+\begin{split}
+\frac{\delta(x^0 -y^0(\tau)+|\bm{x}- \bm{y}(\tau)|)}{2|\bm{x}-\bm{y}(\tau)|} &=\delta(\eta_{\mu \nu}(x^\mu - y^\mu(\tau) )(x^\nu -y^\nu(\tau)))H(x^0-y^0(\tau))\\
+&= \frac{\delta(\tau - \tau^*)}{2|(x^\mu-y^\mu(\tau^*))\dot{y}_\mu(\tau^*)|}
+\end{split}
+\end{align}
+Where $\tau^*$ is the unique point on the particles world line that passes through the past light cone of $x$. Putting this altogether in (\ref{vecpot4}) we finally arrive at:
+\begin{empheq}[box=\fbox]{equation}
+A^\mu(x) = \frac{\mu_0 q c}{4\pi} \frac{\dot{y}^\mu(\tau^*)}{|(x^\nu-y^\nu(\tau^*))\dot{y}_\nu(\tau^*)|}
+\end{empheq}
+This is the \textbf{Li\'enard-Wiechert potential}.
+\section{Electromagnetism in Matter}
+\subsection{Dielectric Materials}
+A material is called \textit{dialetric} if it has no mobile charges and consists of neutral atoms. Roughly speaking, we can think of atoms as a positive point charge (the nucleus) surrounded by a cloud of negative electrons.
+\subsection{Polarisation}
+An external electric field $\mathbf{E}$ will induce an \textit{electric dipole moment}. Recall that for two point charges $q$ and $-q$ separated by a vector $\mathbf{d}$, the electric dipole moment is given by:
+\begin{equation}
+\mathbf{p}=q\mathbf{d}
+\end{equation}
+The electrostatic potential for this system of two opposite point charges is given by the superposition of their individual electrostatic potentials, that is:
+\begin{equation}
+\phi(\mathbf{x})=\frac{1}{4 \pi \epsilon_0}\bigg(\frac{q}{|\mathbf{x}|}-\frac{q}{|\mathbf{x}+\mathbf{d}|} \bigg)
+\end{equation}
+For large $|\mathbf{x}$, we may Taylor expand this expression to find:
+\begin{equation}
+\phi(\mathbf{x}) \approx \frac{1}{4 \pi \epsilon_0} \frac{\mathbf{p} \cdot \mathbf{x}}{|\mathbf{x}|^3}
+\end{equation}
+Similarly, for large $|\mathbf{x}|$ the electric field is approximately:
+\begin{equation}
+\mathbf{E}(\mathbf{x}) \approx \frac{1}{4\pi \epsilon_0}\bigg(\frac{3(\mathbf{p}\cdot\mathbf{x})\hat{\mathbf{x}}-\mathbf{p}}{|\mathbf{x}|^3} \bigg)
+\end{equation}
+A simple model for atomic polarisation is to take the positive nucleus of charge $q$ at the origin and a spherically symmetric cloud of electrons of uniform charge density and total charge $-q$ occupying $r<a$ ($r=|\mathbf{x}|$ and $a$ is the radius of the atom). These imply that the total charge (due to the cloud) contained within a distance $r\leq a$ of the nucleus is $Q(r)=-q\big(\frac{r}{a}\big)^3$. Recall that because the Coulomb law is an inverse square law, the force due to a sphere of uniform charge density is the same as that of a point particle at its sphere with the same charge, and also that spherically symmetric shells do not contribute to the electric field within them. Therefore, the electric field due to the cloud at a distance $r\leq a$ from the nucleus of the atom is:
+\begin{equation}
+\mathbf{E}_{cloud} = \frac{Q(r)}{4\pi \epsilon_0 r^2}\hat{\mathbf{r}} = -\frac{1}{4\pi \epsilon_0} \frac{qr}{a^3}\hat{\mathbf{r}}
+\end{equation} 
+Now, applying an external electric field $\mathbf{E}$ will displace the nucleus to a position $d$ where $\mathbf{E}+\mathbf{E}_{cloud}=\mathbf{0}$. This gives:
+\begin{equation}
+\mathbf{d}=\frac{4 \pi \epsilon_0 a^3}{q} \mathbf{E}
+\end{equation}
+The resulting dipole is therefore:
+\begin{equation}
+\mathbf{p}=q\mathbf{d} = 4 \pi \epsilon_0 a^3 \mathbf{E}
+\end{equation}
+Notice that the dipole is proportional to the electric field $\mathbf{E}$. This is in general true for most materials provided the strength of the external electric field is (much) less than the typical strengths of the electric fields within the atom due to the cloud of the electrons (because this ensures that the displacement of the nucleus, $\mathbf{d}$ is small). Thus, for many materials, we have to good approximation:
+\begin{equation} \label{linear dielectric}
+\mathbf{p} = \alpha \mathbf{E}
+\end{equation}
+Where $\alpha$ is a constant known as the \textit{polarisability} of material, and $\mathbf{p}$ is the atomic dipole moment. We will now focus on the average electric dipole moment per unit volume, that is:
+\begin{equation}
+\mathbf{P}=n \langle \mathbf{p} \rangle
+\end{equation}
+Where $n$ is the density of atoms per unit volume and $ \langle \mathbf{p} \rangle$ denotes the average value of the atomic dipole moment. In general, $\mathbf{P}$ will vary in space and time, that is $\mathbf{P}=\mathbf{P}(\mathbf{x},t)$.
+\subsection{Bound Charge}
+Consider a charge distribution confined to some volume $V$ in space. We seek to find the electrostatic potential of this charge distribution at a distance far enough away so that the approximation (4.3) is valid. The contribution to the electrostatic potential at a point $\mathbf{x}$ from all the atomic dipoles in the volume element $d^3\mathbf{x}'$ is given by:
+\begin{equation}
+d\phi(\mathbf{x})\approx \frac{1}{4 \pi \epsilon_0} \frac{\mathbf{P}(\mathbf{x}')\cdot(\mathbf{x}-\mathbf{x}')}{|\mathbf{x}-\mathbf{x}|^3} \ d^3 \mathbf{x}' 
+\end{equation}
+Therefore, upon integrating this over the volume $V$ with surface boundary $\partial V$ we have:
+\begin{align}
+\begin{split}
+\phi(\mathbf{x})&= \frac{1}{4\pi \epsilon_0} \int_V \frac{\mathbf{P}(\mathbf{x}')\cdot(\mathbf{x}-\mathbf{x}')}{|\mathbf{x}-\mathbf{x}|^3} \ d^3 \mathbf{x}' \\
+&=\frac{1}{4 \pi \epsilon_0} \int_V \mathbf{P}(\mathbf{x}') \cdot \nabla_{\mathbf{x}'}\bigg(\frac{1}{|\mathbf{x}-\mathbf{x}'|} \bigg) \ d^3 \mathbf{x}' \\
+&= \frac{1}{4 \pi \epsilon_0} \int_V \nabla_{\mathbf{x}'} \bigg(\frac{\mathbf{P}(\mathbf{x}')}{|\mathbf{x}-\mathbf{x}'|} \bigg) \ d^3 \mathbf{x}' - \frac{1}{4 \pi \epsilon_0} \int_V \frac{\nabla_{\mathbf{x}'} \cdot \mathbf{P}(\mathbf{x}')}{|\mathbf{x} - \mathbf{x}'|} \ d^3 \mathbf{x}' \\
+&= \frac{1}{4 \pi \epsilon_0} \int_{\partial V} \frac{\mathbf{P} \cdot d\mathbf{S}}{|\mathbf{x}-\mathbf{x}'|} - \frac{1}{4 \pi \epsilon_0} \int_V \frac{\nabla_{\mathbf{x}'} \cdot \mathbf{P}(\mathbf{x}')}{|\mathbf{x} - \mathbf{x}'|} \ d^3 \mathbf{x}'
+\end{split}
+\end{align}
+Comparing the second term with the potential due to a charge distribution $\rho(\mathbf{x})$:
+\begin{equation}
+\phi(\mathbf{x})=\frac{1}{4 \pi \epsilon_0} \int_V \frac{\rho(\mathbf{x}')}{|\mathbf{x}-\mathbf{x}'|} \ d^3 \mathbf{x}'
+\end{equation}
+Se can identify the bulk density of "\textit{bound charge}":
+\begin{equation}
+\rho_{bound}(\mathbf{x})= -\nabla \cdot \mathbf{P}(\mathbf{x})
+\end{equation}
+Similarly, the first term corresponds to surface density of bound charge on $\partial V$:
+\begin{equation}
+\sigma_{bound}=\mathbf{P}(\mathbf{x})\cdot \hat{\mathbf{n}}
+\end{equation}
+(Where $\hat{\mathbf{n}}$ is the normal unit vector to $\partial V$.)
+\subsubsection{Interpretation}
+The above tells us that spatial variation in the polarisation $\mathbf{P}(\mathbf{x})$ leads to a build up of net charge in certain regions of the sample. In particular, we have a build up of charge throughout the volume given by:
+\begin{equation}
+\delta Q_{volume} = \int_V \rho_{bound} \ dV = -\int_V \nabla \cdot \mathbf{P} \ dV = -\int_{\partial V} \mathbf{P} \cdot d\mathbf{S}
+\end{equation}
+This \textit{must} be negated by charge moving elsewhere so that charge conservation is not violated. In particular, this extra build up in charge through the volume is exactly cancelled by the change in charge on the surface of the volume:
+\begin{equation}
+\delta Q_{surface} = \int_{\partial V} \sigma_{bound} \ dS = \int_{\partial V} \mathbf{P} \cdot d\mathbf{S} = -\delta Q_{volume}
+\end{equation} 
+
+\subsection{Electric Displacement} \label{electric displacement}
+We will now introduce additional \textit{free charges} which can move within the given material, for example delocalised electrons which conduct electricity in metals. We will write $\rho_{free}$ for the charge density for these free charges. The overall charge density is thus:
+\begin{equation}
+\rho=\rho_{free}+\rho_{bound} = \rho_{free} - \nabla \cdot \mathbf{P}
+\end{equation}
+Thus, the Maxwell equation (1.1) becomes:
+\begin{align}
+\begin{split}
+&\nabla \cdot \mathbf{E} = \frac{1}{\epsilon_0}(\rho_{free}-\nabla \cdot \mathbf{P}) \\
+\implies& \nabla \cdot (\epsilon_0 \mathbf{E} + \mathbf{P})  = \rho_{free}
+\end{split}
+\end{align}
+Thus it will be convenient to absorb the contribution of the bound charges by defining the \textit{electric displacement}:
+\begin{equation}
+\mathbf{D} = \epsilon_0 \mathbf{E} + \mathbf{P}
+\end{equation}
+so that:
+\begin{equation}
+\nabla \cdot \mathbf{D} = \rho_{free}
+\end{equation}
+For a linear dielectric, i.e. one obeying (\ref{linear dielectric}), we have:
+\begin{equation}
+\mathbf{P} = n \alpha \mathbf{E}
+\end{equation}
+Where $n$ is the number density of atoms and $\alpha$ is some constant of proportionality. In particular, this gives:
+\begin{equation}
+\mathbf{D}=\epsilon \mathbf{E}
+\end{equation}
+Where $\epsilon = n \alpha + \epsilon_0$ is the \textit{permittivity} of the material in question.
+\subsection{Magnetic Fields in Matter}
+\subsubsection{Revision of the Magnetic Dipole Moment}
+Consider a general steady current distribution $\mathbf{J}(\mathbf{x})$ which is localised in a volume $V$. The fact that $\mathbf{J}$ is steady means that there is no net movement of charge, and so we have:
+\begin{gather}
+\frac{\partial \mathbf{E}}{\partial t}=\mathbf{0} \\
+\frac{\partial \rho}{\partial t}=0
+\end{gather} 
+Take note of the particular identities:
+\begin{gather}
+\partial_{x_i}(J_i x_j) = (\partial_{x_i}J_i)x_j+J_i\delta_{ij} = J_j\\
+\partial_{x_i}(J_ix_jx_k)=(\partial_{x_i}J_i)x_jx_k + J_jx_k+J_kx_j =J_jx_k + J_kx_j
+\end{gather}
+Where we have used the fact that $\nabla \cdot \mathbf{J} = 0 $ because by assumption $\frac{\partial \rho}{\partial t}=0$ in the continuity equation (\ref{ceq}). Recall also the \textit{Biot-Savart} law, which states that the vector potential $\mathbf{A}(\mathbf{x})$, with $\mathbf{B} = \nabla \times \mathbf{A}$, is given by:
+\begin{equation} \label{vec pot2}
+\mathbf{A}(\mathbf{x}) = \frac{\mu_0}{4 \pi} \int_V \frac{\mathbf{J}(\mathbf{x}')}{|\mathbf{x}-\mathbf{x}'|} \ d^3 \mathbf{x}'
+\end{equation}
+Expanding this, using the identities (4.24) and (4.25), the fact that $\mathbf{J}$ is localised (so $\mathbf{J}\rightarrow \mathbf{0}$ as $|\mathbf{x}| \rightarrow \infty$) and the divergence theorem, we find:
+\begin{align*}
+A_i(\mathbf{x})&=\frac{\mu_0}{4 \pi} \bigg(\frac{1}{r} \int_V J_i \ d^3\mathbf{x}'+\frac{x_i}{r^3}\int_V \frac{1}{2}(J_ix_j'+J_jx_i')+\frac{1}{2}(J_ix_j'-J_jx_i') \ d^3 \mathbf{x}' + H.O.T. \bigg) \\
+&=\frac{\mu_0}{4 \pi} \bigg( \frac{1}{r}\int_V \frac{\partial}{\partial x_j'}(J_jx_i') \ d^3\mathbf{x}' + \frac{x_i}{2r^3}\int_V \frac{\partial}{\partial x_k'}(J_k x_i' x_j') \ d^3 \mathbf{x}' +\frac{x_i}{r^3} \int_V J_i x_j' - J_j x_i' \ d^3 \mathbf{x}' + H.O.T.  \bigg) \\
+&=\frac{\mu_0}{4 \pi r^3} \times \frac{x_j}{2} \int_V J_i x_j' - J_j x_i' \ d^3 \mathbf{x}' \qquad \qquad \text{(Drop higher order terms.)} \\
+&=\frac{\mu_0}{4 \pi r^3} \times \frac{1}{2}x_j \int_V \epsilon_{kij} \epsilon_{k\alpha \beta}J_\alpha x_\beta ' \ d^3 \mathbf{x}' \\
+&=\frac{\mu_0}{4 \pi r^3} \times \frac{1}{2} \epsilon_{ijk} x_j \int_V (\mathbf{J}(\mathbf{x}') \times \mathbf{x}')_k \ d^3 \mathbf{x}' \\
+&=\frac{\mu_0}{4 \pi r^3} \bigg(\frac{1}{2} \int_V \mathbf{x}' \times \mathbf{J}(\mathbf{x}') \ d^3 \mathbf{x}' \times \mathbf{x} \bigg)_i
+\end{align*} 
+Thus we conclude:
+\begin{equation} \label{vec pot}
+\mathbf{A}(\mathbf{x}) = \frac{\mu_0}{4 \pi} \frac{\mathbf{m} \times \mathbf{x}}{|\mathbf{x}|^3}
+\end{equation}
+Where the \textit{magnetic dipole moment} $\mathbf{m}$ is given by:
+\begin{equation} \label{mag dipole}
+\mathbf{m} = \frac{1}{2} \int_V \mathbf{x}' \times \mathbf{J}(\mathbf{x}') \ d^3 \mathbf{x}'
+\end{equation}
+Let us calculate the magnetic dipole moment of a planar loop with steady current I flowing (anticlockwise) around it, normal vector $\hat{\mathbf{n}}$ and enclosing an area $A$.\\
+\\
+Because $\mathbf{J}$ is localised to the wire defining the loop, the integral \ref{mag dipole} collapses to a line integral. We compute $\mathbf{m}$ component-wise:
+\begin{wrapfigure}[4]{r}{0.3\textwidth}
+	\includegraphics[scale=0.6]{loop}
+\end{wrapfigure}
+\begin{align*}
+m_i &= \frac{1}{2}\epsilon_{ijk}\int_{\partial A}x_j J_k \ dl \\
+&= \frac{I}{2}\epsilon_{ijk}\int_{\partial A}x_jdr_k \\
+&= \frac{I}{2}\epsilon_{ijk} \epsilon_{\alpha \beta \gamma}\int_{A} \frac{\partial}{\partial x_\beta}(x_j \delta_{\gamma k}) dS_\alpha \\
+&=\frac{I}{2} \epsilon_{ijk} \epsilon_{\alpha jk} \int_{A} dS_\alpha \\
+&=I \int_A dS_i
+\end{align*}
+Where in the second line we have used the fact that $\mathbf{J} = I d\mathbf{r}$ , and in the third line we have turned our line integral into a surface one by the use of Stokes' Theorem - in particular taking the vector field $\mathbf{F}$ to have components $F_\gamma=x_j \delta_{\gamma k}$. Therefore, the magnetic dipole moment is given by:
+\begin{equation}
+\mathbf{m}=I\int_A d\mathbf{S} = IA \hat{\mathbf{n}}
+\end{equation}
+\textbf{Note}: The first equality above is perfectly general and will apply to any loop of wire. We only used the fact the loop is planar and that it encloses an area $A$ with normal $\hat{\mathbf{n}}$ in the very last equality.\\
+\\
+Taking the curl of the vector potential (\ref{vec pot}) we find that the corresponding far magnetic field is:
+\begin{equation}
+\mathbf{B}(\mathbf{x}) = \frac{\mu_0}{4 \pi} \bigg( \frac{3(\mathbf{m}\cdot \mathbf{x})\hat{\mathbf{x}}- \mathbf{m}}{|\mathbf{x}|^3} \bigg)
+\end{equation}
+This will be valid for the loop above provided that $|\mathbf{x}| >> \sqrt{A}$.
+\subsubsection{Magnetic Fields in Matter}
+The key idea here is that \textit{magnetic dipoles/current loops exist within materials}. This can be understood intuitively by imagining electrons orbiting the nucleus of the atom, or the spin of an individual electron causing a dipole. We define $\mathbf{M}(\mathbf{x})$ to be the \text{average magnetic dipole per unit volume}, so that:
+\begin{equation}
+\mathbf{M}(\mathbf{x})=n \langle \mathbf{m} \rangle
+\end{equation}
+Where $n$ is the number density of atoms and $\langle \mathbf{m} \rangle$ is the average atomic dipole moment. For nearly all materials, we have $\mathbf{M}=\mathbf{0}$, with the exception being \textit{ferromagnetic} materials.\\
+\\
+In the presence of an external magnetic field $\mathbf{B}$, the dipoles will anti-align with the field, and the average magnetic dipole moment per unit volume is well approximated by:
+\begin{equation} \label{lin mag}
+\mathbf{M}=\frac{1}{\mu_0} \frac{\chi_m}{1+\chi_m} \mathbf{B}
+\end{equation}
+Where $\chi_m$ is known as the \textit{magnetic susceptibility} of the material. We say a material is:
+\begin{itemize}
+	\item \textbf{diamagnetic} if $-1 < \chi_m < 0$.
+	\item \textbf{paramagnetic}  if $\chi_m>0$.
+\end{itemize}
+Some materials are not linear and in particular they can exhibit \textbf{ferromagnetism}, that is $\mathbf{M} \neq \mathbf{0}$ for $\mathbf{B}=\mathbf{0}$.
+\subsection{Bound Currents}
+We now use the ideas we have developed in the previous section to investigate the macroscopic properties of materials. Using (\ref{vec pot}), we see that the contribution to the vector potential $\mathbf{A}(\mathbf{x})$ due to a small volume element $d^3 \mathbf{x}'$ is:
+\begin{equation}
+d\mathbf{A}(\mathbf{x}) = \frac{\mu_0}{4 \pi} \frac{\mathbf{M}(\mathbf{x}')\times (\mathbf{x}-\mathbf{x}')}{|\mathbf{x} - \mathbf{x}'|^3}
+\end{equation}
+Thus, integrating over the volume $V$ to which our material is contained:
+\begin{align}
+\begin{split}
+\mathbf{A}(\mathbf{x}) &= \frac{\mu_0}{4 \pi} \int_V \frac{\mathbf{M}(\mathbf{x}') \times (\mathbf{x}-\mathbf{x}')}{|\mathbf{x} - \mathbf{x}'|^3} \ d^3 \mathbf{x}' \\
+&= \frac{\mu_0}{4 \pi} \int_V \mathbf{M}(\mathbf{x}') \times \nabla_{\mathbf{x}'} \bigg( \frac{1}{|\mathbf{x}-\mathbf{x}'|} \bigg) \ d^3 \mathbf{x}' \\
+&= \frac{\mu_0}{4 \pi} \int_{\partial V} \frac{\mathbf{M}(\mathbf{x}') \times d\mathbf{S}}{|\mathbf{x} - \mathbf{x}'|} + \frac{\mu_0}{4 \pi} \int_V \frac{\nabla_{\mathbf{x}'} \times \mathbf{M}(\mathbf{x}')}{|\mathbf{x}-\mathbf{x}'|} \ d^3 \mathbf{x}' \\
+\end{split}
+\end{align}
+Comparing the second term to the general expression for a vector potential due to a steady current (\ref{vec pot2}), we identify the \textit{bulk bound current density}:
+\begin{equation}
+\mathbf{J}_{bound}=\nabla \times \mathbf{M} 
+\end{equation}
+Similarly, the first term corresponds to a \textit{surface current density} given by:
+\begin{equation}
+\mathbf{K}_{bound}=\mathbf{M} \times \hat{\mathbf{n}}
+\end{equation}
+\subsubsection{Interpretation}
+Physically, we interpret these bound currents in the volume and on its surface as the result of the miscancellation of all the tiny loops of current in the atoms of the material [\ref{ref1}]. Note that if the magnetisation $\mathbf{M}$ is constant, then the bound current is $\mathbf{0}$ so that only surface currents exist, but if the magnetisation is not constant there can be both interior and surface currents in/on the material.
+\subsection{Amp\'ere's Law in a Medium}
+Similar to our treatment of free charges in section (\ref{electric displacement}), we introduce the \textit{free current distribution} $\mathbf{J}_{free}(\mathbf{x})$:
+\begin{equation}
+\mathbf{J}(\mathbf{x}) = \mathbf{J}_{free}(\mathbf{x}) + \mathbf{J}_{bound}(\mathbf{x}) = \mathbf{J}_{free}(\mathbf{x}) + \nabla \times \mathbf{M}
+\end{equation}
+It follows from the Maxwell equation (1.4) that:
+\begin{gather}
+\begin{split}
+\nabla \times \mathbf{B} = \mu_0(\mathbf{J}_{free} + \nabla \times \mathbf{M}) \\
+\iff \nabla \times (\frac{1}{\mu_0} \mathbf{B} - \mathbf{M})= \mathbf{J}_{free}
+\end{split}
+\end{gather}
+We absorb the dependence on bound currents by defining the \textit{magnetising field} $\mathbf{H}$ as:
+\begin{equation}
+\mathbf{H} = \frac{1}{\mu_0} \mathbf{B} - \mathbf{M}
+\end{equation}
+So that:
+\begin{equation}
+\nabla \times \mathbf{H} = \mathbf{J}_{free}
+\end{equation}
+For linear magnetisation given by (\ref{lin mag}), we get:
+\begin{equation}
+\mathbf{B}= \mu \mathbf{H} 
+\end{equation}
+where $\mu= \mu_0(1+\chi_m)$ is the \textit{permeability} of the material in question.\\
+\\
+Recall that the derivation of Amp\'ere's law in a vacuum requires use of the continuity equation (\ref{ceq}). We must have the same equation satisfied for the bound currents and charges, because bound charge is also conserved. So if we impose:
+\begin{equation}
+\nabla \cdot \mathbf{J}_{bound}+\frac{\partial \rho_{bound}}{\partial t} = 0
+\end{equation}
+It becomes necessary to include an extra term for non-steady current, that is:
+\begin{equation}
+\mathbf{J}_{bound} = \nabla \times \mathbf{M} + \frac{\partial \mathbf{P}}{\partial t}
+\end{equation}
+There is no contradiction with anything that we have done so far - this extra term is a \textit{corrective} term for when the electric field (and thus current $\mathbf{J}$) is not steady, and does not contradict our previous working since in the derivations in the proceeding section we assumed that the electric field was steady (a key assumption in deriving (\ref{vec pot})).\\
+\\
+The full Maxwell equation (1.4) thus becomes:
+\begin{align*}
+\begin{split}
+\nabla \times \mathbf{B} - \frac{1}{c^2} \frac{\partial \mathbf{E}}{\partial t} &= \mu_0 \mathbf{J}_{free} + \mu_0 \mathbf{J}_{bound} \\
+&=\mu_0 \mathbf{J}_{free} + \mu_0 \nabla \times \mathbf{M} + \mu_0\frac{\partial \mathbf{P}}{\partial t}
+\end{split}
+\end{align*}
+Which we may rewrite in terms of $\mathbf{D}$ and $\mathbf{H}$ as:
+\begin{equation}
+\nabla \times \mathbf{H} - \frac{\partial \mathbf{D}}{\partial t} = \mathbf{J}_{free}
+\end{equation}
+Thus we have the \textit{macroscopic Maxwell's equations}:
+\begin{empheq}[box=\fbox]{align}
+\nabla \cdot \mathbf{D} &= \rho_{free} \\
+\nabla \cdot \mathbf{B} &= 0 \\
+\nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+\nabla \times \mathbf{H} &= \mathbf{J}_{free} + \frac{\partial \mathbf{D}}{\partial t}
+\end{empheq}
+(Note that the source free equations remain unchanged in the medium).
+
+\subsection{Electromagnetic Waves in Matter}
+\subsubsection{Boundary Conditions}
+Let's now consider two different regions of space that are separated by a surface $S$, with each region having potentially different fields satisfying the macroscopic Maxwell's equations in the absence of free charges. We wish to find boundary conditions on the fields at $S$, since these will be required when solving any problems in future.\\
+\begin{wrapfigure}[16]{r}{0.3\textwidth}
+	\includegraphics[scale=0.3]{pillboxandloop}
+\end{wrapfigure}
+To derive the first set of boundary conditions, we will consider a "\textit{Gaussian pill box}" [\ref{ref2}], a small cylinder of height $h$ which goes through the surface $S$ at some point with its axis being normal to $S$. Integrating over it, we find that:
+\begin{align*}
+\begin{split}
+&\lim_{h \rightarrow 0} \int_V \nabla \cdot \mathbf{D} = \lim_{h \rightarrow 0} \int_V \rho_{free} \ dV \\
+&\implies \hat{\mathbf{n}} \cdot (\mathbf{D}_+ - \mathbf{D}_-) = \sigma_{free}
+\end{split}
+\end{align*}
+Where we use $\mathbf{D}_\pm$ to denote the value of $\mathbf{D}$ just above and below the surface respectively, and $\sigma_{free}$ is the charge density of free charge carriers on the surface of the material. A similar argument leads to an analogous result for $\mathbf{B}$. So we have:
+\begin{align}
+\hat{\mathbf{n}} \cdot (\mathbf{D}_+ - \mathbf{D}_-) &= \sigma_{free} \\
+\hat{\mathbf{n}} \cdot (\mathbf{B}_+ - \mathbf{B}_-) &= 0
+\end{align}
+We conclude that \textbf{in the absence of free charges the normal components of D and B are continuous}. Note that this implies the normal components of $\mathbf{E}= \frac{1}{\epsilon}\mathbf{D}$ and/or $\mathbf{H}=\frac{1}{\mu} \mathbf{B}$ are not necessarily continuous, because it is possible that $\epsilon$ and $\mu$ take different values above and below $S$. In particular, we may use the above result and our definitions of $\mathbf{D}$ and $\mathbf{H}$ in terms of $\mathbf{E}$ and $\mathbf{B}$ to deduce these discontinuities:
+\begin{align*}
+\mathbf{D} = \epsilon_0\mathbf{E} + \mathbf{P} &\implies \lim_{h \rightarrow 0} \hat{\mathbf{n}} \cdot (\mathbf{D}_+ - \mathbf{D}_-) = \lim_{h \rightarrow 0} \hat{\mathbf{n}} \cdot (\epsilon_0 \mathbf{E} +\mathbf P) \\
+& \implies \hat{\mathbf{n}} \cdot (\mathbf{E}_+-\mathbf{E}_-) = \sigma_{free} -\frac{1}{\epsilon_0} \hat{\mathbf{n}} \cdot (\mathbf{P}_+ - \mathbf{P}_-)
+\end{align*}
+A similar argument can be applied to the $\mathbf{H}$ field. Thus, we find the discontinuities:
+\begin{align}
+\hat{\mathbf{n}} \cdot (\mathbf{E}_+-\mathbf{E}_-) &= \sigma_{free} -\frac{1}{\epsilon_0} \hat{\mathbf{n}} \cdot (\mathbf{P}_+ - \mathbf{P}_-) \label{1} \\
+\hat{\mathbf{n}} \cdot (\mathbf{H}_+-\mathbf{H}_-) &= - \hat{\mathbf{n}} \cdot (\mathbf{M}_+ - \mathbf{M}_-) \label{2}
+\end{align}
+For the tangential components, we will consider a square loop $l$ passing through the plane, in the plane normal to the surface. Letting the loop have a height $h$ above the plane. Taking $h\rightarrow 0$ and integrating:
+\begin{align*}
+&\lim_{h \rightarrow 0} \int_l \mathbf{E} \cdot \mathbf{dl} = \lim_{h \rightarrow 0}\int_A(\nabla \times \mathbf{E}) \cdot \mathbf{dS} \\
+&\implies \hat{\mathbf{n}} \times (\mathbf{E}_+ - \mathbf{E}_-)= \mathbf{0}
+\end{align*}
+Where we use $\mathbf{E}_\pm$ to denote the values of the electric field just above and below the surface, and $\partial A = l$ from Stokes' Theorem. For more detail on this implication, see [\ref{matching conditions}]. After a similar analysis on the magnetising field, we have the matching conditions:
+\begin{align}
+\hat{\mathbf{n}} \times (\mathbf{E}_+ - \mathbf{E}_-)&= \mathbf{0} \\
+\hat{\mathbf{n}} \times (\mathbf{H}_+ - \mathbf{H}_-)&= \mathbf{K}
+\end{align}
+Where $\mathbf{K}$ is the \textit{surface current}, due to free charges. Thus, \textbf{in the absence of free charges the tangential components of E and H are continuous}. Note that this implies that under these conditions it may not be true that the tangential components of $\mathbf{B}$ and $\mathbf{D}$ are continuous. Similar arguments to those used to deduce (\ref{1}) and (\ref{2}) may be used to derive the equivalent boundary conditions on the tangential components of $\mathbf{B}$ and $\mathbf{D}$.
+\subsubsection{Deriving the Wave Equation}
+In the absence of free charges, the macroscopic Maxwell's equations become:
+\begin{align}
+\nabla \cdot \mathbf{D} &= 0 \\
+\nabla \cdot \mathbf{B} &= 0 \\
+\nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+\nabla \times \mathbf{H} &= \frac{\partial \mathbf{D}}{\partial t}
+\end{align}
+Where, for a linear material, we have:
+\begin{align}
+\mathbf{D} &= \epsilon \mathbf{E} \\
+\mathbf{B} &= \mu \mathbf{H}
+\end{align}
+For such linear materials, we can find wave solutions to this set of equations in a process completely analogous to showing Maxwell's equations in a vacuum have wave solutions. In particular, with some manipulation (exercise) we have:
+\begin{align}
+\frac{\partial^2 \mathbf{E}}{\partial t^2} &= \mu \epsilon \nabla^2 \mathbf{E} \\
+\frac{\partial^2 \mathbf{H}}{\partial t^2} &= \mu \epsilon \nabla^2 \mathbf{H}
+\end{align}
+Thus, both the electric and magnetising fields satisfy the wave equation, with velocity\footnote{The inequality follows from the fact that $\epsilon = \epsilon_0 + n \alpha$ and $\mu=\mu_0(1+\chi_m)$, provided we assume $\chi_m>-1$ and $\alpha>0$ ($\alpha$ is the polarisability and $\chi_m$ is the magnetic susceptibility)}  $v=\frac{1}{\sqrt{\mu \epsilon}} \leq c$. We thus have solutions of the form:
+\begin{align}
+\mathbf{E}&=\mathbf{E}_0 \sin (\mathbf{k} \cdot \mathbf{x} - \omega t) \label{Ewave} \\
+\mathbf{B}&=\mathbf{B}_0 \sin(\mathbf{k} \cdot \mathbf{x} - \omega t) \label{Bwave}
+\end{align}
+With $\omega = v |\mathbf{k}|$, and to ensure consistency with the macroscopic Maxwell's equations:
+\begin{align}
+\mathbf{k} \cdot \mathbf{E}_0 = \mathbf{k} \cdot \mathbf{B_0} = 0 \\
+\mathbf{k} \times \mathbf{E}_0 = \omega \mathbf{B}_0 
+\end{align}
+This corresponds to waves propagating with speed $v$. Notice that the electric and magnetic fields oscillate perpendicular to one another, but are in phase.\\
+\\
+We now define the \textit{index of refraction} as the ratio of $c$ to $v$, that is:
+\begin{equation}
+n= \frac{c}{v}
+\end{equation}
+Note that $n \geq 1$. We will now investigate the non-trivial effects that will occur when $n$ varies in different regions of a sample. We'll consider two regions with $n=n_+$ and $n=n_-$ which are separated by a surface $S$ of discontinuity. As with any discontinuous boundary problem, the first step is to find the boundary conditions on $S$. Fortunately, we've already done this in the previous section - the absence of free charges gives us:
+\begin{align}
+\hat{\mathbf{n}} \cdot (\mathbf{D}_+ - \mathbf{D}_-) &= 0 \label{bc1} \\
+\hat{\mathbf{n}} \cdot (\mathbf{B}_+ - \mathbf{B}_-) &= 0 \label{bc2} \\ 
+\hat{\mathbf{n}} \times (\mathbf{E}_+ - \mathbf{E}_-)&= \mathbf{0} \label{bc3} \\
+\hat{\mathbf{n}} \times (\mathbf{H}_+ - \mathbf{H}_-)&= \mathbf{0} \label{bc4}
+\end{align}
+i.e. the fields are continuous across the interface.
+\subsubsection{Reflection and Refraction}
+We'll assume for simplicity that the surface $S$ separating the two mediums is the line $x=0$, that is we have two regions $x <0$ and $x>0$ with differing permittivities and permeablities $\epsilon_\pm$ and $\mu_\pm$ respectively. We'll also orient ourselves so that the incident (and reflected and transmitted) wave lies in the $x,z$ plane. \\
+\\
+\begin{wrapfigure}[18]{r}{0.45\textwidth}
+	\includegraphics[scale=0.45]{diagram1}
+\end{wrapfigure}
+Using the subscript $I$ to denote incident, for the incident wave (on $x<0$) we have:
+\begin{align}
+\mathbf{E}_{inc}(\mathbf{x},t)&=\mathbf{E}_I\sin(\mathbf{k}_I \cdot \mathbf{x} - \omega_I t) \\
+\mathbf{k}_I &= k_I \cos \theta_I \hat{\mathbf{x}} + k_I \sin \theta_I \hat{\mathbf{z}}
+\end{align}
+Similarly using $R$ to denote reflected, for the reflected wave (also on $x<0$) we have:
+\begin{align}
+\mathbf{E}_{ref}(\mathbf{x},t)&=\mathbf{E}_R \sin(\mathbf{k}_R \cdot \mathbf{x} - \omega_R t) \\
+\mathbf{k}_R&= -k_R \cos \theta_R \hat{\mathbf{x}} + k_R \sin \theta_R \hat{\mathbf{z}}
+\end{align}
+Finally, we write the transmitted wave (on $x>0$) as:
+\begin{align}
+\mathbf{E}_{trans}(\mathbf{x},t)&=\mathbf{E}_T \sin(\mathbf{k}_T \cdot \mathbf{x} - \omega_T t) \\
+\mathbf{k}_T&= -k_T \cos \theta_T \hat{\mathbf{x}} + k_T \sin \theta_T \hat{\mathbf{z}}
+\end{align}
+The total electric field is thus:
+\begin{equation}
+\mathbf{E} = 
+\begin{cases} 
+\mathbf{E}_{inc} + \mathbf{E}_{ref} \qquad \text{on } x<0 \\
+\mathbf{E}_{trans} \qquad  \qquad \text{  on } x>0
+\end{cases}
+\end{equation}
+Let's now use our boundary conditions from the previous section to find constraints on all the variables given in the above. First, we note that (\ref{bc1}) yields:
+\begin{equation*}
+\hat{\mathbf{x}}\cdot \mathbf{E}_T \sin(\mathbf{k}_T\cdot \mathbf{x}|_{x=0} - \omega_T t) - \hat{\mathbf{x}}\cdot \mathbf{E}_I\sin(\mathbf{k}_I\cdot \mathbf{x}|_{x=0} - \omega_I t)-\hat{\mathbf{x}}\cdot \mathbf{E}_R \sin(\mathbf{k}_R\cdot \mathbf{x}|_{x=0} - \omega_R t)=0
+\end{equation*}
+[Note that $\mathbf{x}|_{x=0}=(0,y,z)^T$]\\
+For this to hold for all $y$, $z$ and $t$, it follows\footnote{To see the first, it is sufficient to set y=z=0 and demand that the resulting equation be true for all times $t$. Similarly, for the second, set $t=0$ and demand that the resulting equation is true for all $y$ and $z$. A more concise way to state this whole requirement is that the \textit{phase factor} $\mathbf{k}\cdot \mathbf{x}|_{x=0}-\omega t$ is constant for all $y,z,t$.} that:
+\begin{gather}
+\omega_I=\omega_R=\omega_T \label{omegas} \\
+k_I \sin \theta_I = k_R \sin \theta_R = k_T \sin \theta_T \label{thetas}
+\end{gather}
+In each region, we have the vector related dispersion relation $\omega = v |\mathbf{k}|$ (as was derived in the previous section), and so writing
+\begin{equation}
+v_\pm = \frac{1}{\sqrt{\epsilon_\pm \mu_\pm}}
+\end{equation}
+we have:
+\begin{align}
+\begin{split} \label{omegas2}
+\omega_I &= v_- k_I \\
+\omega_R &= v_- k_R \\
+\omega_T &= v_+ k_T 
+\end{split}
+\end{align}
+Thus, with the relation (\ref{omegas}) we conclude that $k_I=k_R$. Putting this into relation (\ref{thetas}) we have the \textbf{law of reflection}:
+\begin{empheq}[box=\fbox]{equation}
+\theta_I = \theta_R
+\end{empheq}
+Similarly, using the first and third equations in (\ref{omegas2}) we find that $\frac{k_I}{k_T} = \frac{v_+}{v_-} = \frac{n_-}{n_+}$. Substituting this into (\ref{thetas}) we get \textbf{Snell's Law of Refraction}:
+\begin{empheq}[box=\fbox]{align}
+n_- \sin \theta_I = n_+ \sin \theta_T
+\end{empheq}
+This is more commonly written as:
+\begin{equation}
+n_1 \sin \theta_1 = n_2 \sin \theta_2 \iff \frac{n_1}{n_2} = \frac{\sin \theta_2}{\sin \theta_1}
+\end{equation}
+\subsubsection{The Frusnel Equations and Brewster's Angle}
+In the previous section, we made considerable progress without explicitly knowing what the vectors $\mathbf{E}_I$, $\mathbf{E}_R$ and $\mathbf{E}_T$ actually were. We will now extract more information by imposing boundary conditions on the aforementioned polarisation vectors.\\
+\\
+We'll focus on the case where $\mathbf{E}_I$, $\mathbf{E}_R$ and $\mathbf{E}_T$ all lie in the incident plane (the $x,z$ plane). Then we have:
+\begin{align}
+\begin{split}
+\mathbf{k}_I &= k_I \cos \theta_I \hat{\mathbf{x}} + k_I \sin \theta_I \hat{\mathbf{z}} \\
+\implies \mathbf{E}_I &= -E_I \sin \theta_I \hat{\mathbf{x}} + E_I \cos \theta_I \hat{\mathbf{z}}
+\end{split}
+\end{align}
+(This is because we have insisted that the oscillations happen in the $x,z$ plane, and we know that they must also be perpendicular to the direction of travel $\mathbf{k}$). By use of (\ref{Bwave}), the corresponding magnetic field for this incident electric field is given by:
+\begin{align}
+\mathbf{B}_{inc} &= \mathbf{B}_I \sin(\mathbf{k}_I \cdot \mathbf{x}- \omega_I t) \\
+\text{with} \qquad \mathbf{B}_I &= \frac{1}{v_-} (\hat{\mathbf{k}}_I \times \mathbf{E}_I) = -\frac{E_I}{v_-}\hat{\mathbf{y}}
+\end{align}
+Applying similar arguments we can find expressions for $\mathbf{B}_{ref}$ and $\mathbf{B}_{trans}$. An overall summary is:
+\begin{align}
+\begin{split}
+\mathbf{k}_I &= k_I \cos \theta_I \hat{\mathbf{x}} + k_I \sin \theta_I \hat{\mathbf{z}} \qquad \ \ \mathbf{E}_I = -E_I \sin \theta_I \hat{\mathbf{x}} + E_I \cos \theta_I \hat{\mathbf{z}} \\
+\mathbf{B}_{inc} &= \mathbf{B}_I \sin(\mathbf{k}_I \cdot \mathbf{x}- \omega t) \qquad \qquad \mathbf{B}_I = -\frac{E_I}{v_-}\hat{\mathbf{y}}
+\end{split}
+\\
+\cline{1-2}
+\begin{split}
+\mathbf{k}_R &= -k_I \cos \theta_I \hat{\mathbf{x}} + k_I \sin \theta_I \hat{\mathbf{z}} \qquad \mathbf{E}_R = E_R \sin \theta_I \hat{\mathbf{x}} + E_R \cos \theta_I \hat{\mathbf{z}} \\
+\mathbf{B}_{ref} &= \mathbf{B}_R \sin(\mathbf{k}_R \cdot \mathbf{x}- \omega t) \qquad \quad \ \ \mathbf{B}_R = \frac{E_R}{v_-}\hat{\mathbf{y}}
+\end{split}
+\\
+\cline{1-2}
+\begin{split}
+\mathbf{k}_T &= k_T \cos \theta_T \hat{\mathbf{x}} + k_T \sin \theta_T \hat{\mathbf{z}} \qquad \mathbf{E}_I = -E_T \sin \theta_T \hat{\mathbf{x}} + E_T \cos \theta_T \hat{\mathbf{z}} \\
+\mathbf{B}_{trans} &= \mathbf{B_T} \sin(\mathbf{k}_T \cdot \mathbf{x}- \omega t) \qquad \quad \ \ \mathbf{B}_T = -\frac{E_T}{v_+}\hat{\mathbf{y}}
+\end{split}
+\end{align}
+Notice that we have dropped the subscript on the $\omega$s because of the result (\ref{omegas}), and have also used the law of reflection and result (\ref{thetas}) derived in the previous section.\\
+\\
+Lets apply the boundary condition (\ref{bc1}) to the above fields:
+\begin{align}
+\begin{split} \label{D condition}
+\hat{\mathbf{x}} \cdot (\mathbf{D}_+-\mathbf{D}_-) = 0 &\implies \hat{\mathbf{x}} \cdot ( \epsilon_+ \mathbf{E}_T - \epsilon_-(\mathbf{E}_I + \mathbf{E}_R)) = 0 \\
+& \implies \epsilon_+ E_T \sin \theta_T = \epsilon_-(E_I-E_R)\sin \theta_I
+\end{split}
+\end{align}
+While the electric boundary condition (\ref{bc3}) gives:
+\begin{align}
+\begin{split} \label{E condition}
+\hat{\mathbf{x}} \times (\mathbf{E}_+-\mathbf{E}_-) = \mathbf{0} &\implies \hat{\mathbf{x}} \times (\mathbf{E}_T - (\mathbf{E}_I+\mathbf{E}_R)) = \mathbf{0} \\
+&\implies E_T \cos \theta_T = (E_I + E_R) \cos \theta_I
+\end{split}
+\end{align}
+The magnetic boundary condition (\ref{bc2}) is identically satisfied, while the final boundary condition (\ref{bc4}) yields:
+\begin{align}
+\begin{split} \label{H condition}
+\hat{\mathbf{x}} \times (\mathbf{H}_+ - \mathbf{H}_-) = 0 & \implies \hat{\mathbf{x}} \times (\frac{1}{\mu_+}\mathbf{B}_T - \frac{1}{\mu_-}(\mathbf{B}_I + \mathbf{B}_R)) = \mathbf{0} \\
+&\implies \epsilon_- v_-(E_I - E_R) = \epsilon_+ v_+E_T
+\end{split}
+\end{align}
+Recalling that $v_\pm = \frac{1}{\sqrt{\epsilon_\pm \mu_\pm}}$ and $n_\pm = \frac{c}{v_\pm}$ it can be shown with the help of Snell's law that equation (\ref{D condition}) is equivalent to (\ref{H condition}). We may then manipulate the two resulting simultaneous equations to find:
+\begin{align}
+\frac{E_R}{E_I} &= \frac{n_- \cos \theta_T - \mu_r n_+ \cos \theta_I}{n_- \cos \theta_T + \mu_r n_+ \cos \theta_I} \\
+\frac{E_T}{E_I} &= \frac{2n_- \cos \theta_I}{n_- \cos \theta_I + \mu_r n_+ \cos \theta_I}
+\end{align}
+Where we define $\mu_r = \frac{\mu_-}{\mu_+}$. \\
+\\
+In the case that $\mu_r =1$, we have the \textbf{Frusnel equations}:
+\begin{empheq}[box=\fbox]{align}
+	\frac{E_R}{E_I} &= \frac{n_- \cos \theta_T - n_+ \cos \theta_I}{n_- \cos \theta_T + n_+ \cos \theta_I} \\
+	\frac{E_T}{E_I} &= \frac{2n_- \cos \theta_I}{n_- \cos \theta_I + n_+ \cos \theta_I}
+\end{empheq}
+Together with the use of Snell's law, it is possible to completely determine the ratios $\frac{E_T}{E_I}$ and $\frac{E_R}{E_I}$ in terms of $n_\pm$ and $\theta_I$. In particular, we note that there is a specific angle of incidence such $E_R=0$, meaning that there is no reflection. This occurs when $n_-\cos \theta_T - n_+ \cos \theta_I = 0$. This angle is known as \textbf{Brewster's angle}. Denoting it as $\theta_B$ (so that $\theta_I$ becomes $\theta_B$ in the above), after some manipulation we find:
+\begin{empheq}[box=\fbox]{equation}
+	\tan \theta_B = \frac{n_+}{n_-}
+\end{empheq}
+
+\subsubsection{Total Internal Reflection}
+If $n_->n_+$ then Snell's law ($\sin \theta_T = \frac{n_-}{_+}\sin \theta_I$) has no solution for $\theta_T$ when $\theta_I > \theta_{crit}$, the critical angle, given by:
+\begin{equation}
+\theta_{crit} = \sin^{-1} \bigg( \frac{n_+}{n_-} \bigg)
+\end{equation}
+It would seem that we have run into an issue, because physically we know something \textit{must} happen, but the mathematics seems to break down... or does it?...\\
+\\
+To understand fully what is going on here, we'll return to our interpretation of the incident wave vector $\mathbf{k}_T$. Before, we derived what it should be by use of geometrical considerations, but now things will get a bit more algebraic. We know that $\mathbf{k}_T \cdot \hat{\mathbf{y}} = 0$ and $\mathbf{k}_T \cdot \hat{\mathbf{z}} = \frac{\omega}{v_-}\sin \theta_I$ by the relation (\ref{thetas}). We also know that $|\mathbf{k}_T|^2 = \frac{\omega^2}{v_-^2}$.
+
+\section{References}
+\begin{enumerate}[{[}1{]}]
+	\item \label{ref1} A nice diagram of this process can be found at http://bolvan.ph.utexas.edu/~vadim/Classes/18f/Hfield.pdf. 
+	\item \label{ref2} Source of image is http://www.deepspace.ucsb.edu/wp-content/uploads/2010/08/033\_Chapter-22-Flux-and-Gauss-Law-PML.pdf.
+	\item \label{matching conditions} https://en.wikipedia.org/wiki/Interface\_conditions\_for\_electromagnetic\_fields
+	\item \label{lightcone} I chose this simple image without any bells and whistles from http://itp.tuwien.ac.at/index.php/File:Light\_cone.jpg
+\end{enumerate}
+\end{document}
